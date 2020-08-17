@@ -10,6 +10,23 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <insert id="saveClass" parameterType="com.start.springbootdemo.entity.Class">
+        insert into `class`
+        (id,grade_id,class_name,addtime)
+        values
+        (#{id},#{gradeId},#{className},#{addtime})
+    </insert>
+    <update id="updateClass" parameterType="com.start.springbootdemo.entity.Class">
+        update `class` set
+        <if test="className != null and className !=''">
+            class_name = #{className},
+        </if>
+        <if test="gradeId != null and gradeId !=''">
+            grade_id = #{gradeId},
+        </if>
+        updatetime = #{updatetime}
+        where id = #{id}
+    </update>
 
 
 </mapper>
