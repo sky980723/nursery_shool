@@ -52,6 +52,10 @@ public class ClassServiceImpl implements IClassService {
     public Results<String> deleteClass(String id) {
         Results<String> results = new Results<>();
         classDao.deleteClass(id);
-        return null;
+        //删除班级后，如果有学生与该班级存在绑定关系，应该同时删除绑定关系
+
+        results.setStatus("0");
+
+        return results;
     }
 }
