@@ -1,6 +1,6 @@
 package com.start.springbootdemo.controller;
 
-import com.start.springbootdemo.entity.CompanyUser;
+import com.start.springbootdemo.entity.CompanySchool;
 import com.start.springbootdemo.entity.PublicityApp;
 import com.start.springbootdemo.service.IIndexService;
 import com.start.springbootdemo.util.Results;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -35,16 +36,17 @@ public class IndexController {
     }
 
     /**
-     * 前端页面的登录
+     * 前端页面的登录(前后端通用)
      *
      * @param account  账号
      * @param password 密码
      * @return
      */
     @GetMapping("/login")
-    public Results<CompanyUser> login(@RequestParam(name = "account") String account,
-                                      @RequestParam(name = "password") String password) {
+    public Results<CompanySchool> login(@RequestParam(name = "account") String account,
+                                        @RequestParam(name = "password") String password, HttpServletRequest request) {
 
-        return indexService.login(account, password);
+        return indexService.login(account, password,request);
     }
+
 }

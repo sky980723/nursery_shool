@@ -27,6 +27,9 @@
         updatetime = #{updatetime}
         where id = #{id}
     </update>
+    <delete id="deleteClass">
+        delete from `class` where id = #{id}
+    </delete>
 
 
 </mapper>

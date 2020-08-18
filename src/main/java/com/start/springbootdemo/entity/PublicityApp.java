@@ -1,7 +1,8 @@
 package com.start.springbootdemo.entity;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
+/**
+ * @author Sky
+ */
 public class PublicityApp {
 
     private String id;

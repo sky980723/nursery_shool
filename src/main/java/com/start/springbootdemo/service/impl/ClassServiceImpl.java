@@ -7,8 +7,10 @@ import com.start.springbootdemo.util.KeyGen;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Service
@@ -19,8 +21,16 @@ public class ClassServiceImpl implements IClassService {
 
 
     @Override
-    public Results<String> saveOrUpdateClass(Class studentClass) {
+    public Results<String> saveOrUpdateClass(Class studentClass, HttpServletRequest request) {
         Results<String> results = new Results<>();
+        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        if (StringUtils.isEmpty(schoolId)) {
+            results.setStatus("1");
+            results.setMessage("登录超时，请重新登录");
+
+            return results;
+        }
+        studentClass.setSchoolId(schoolId);
         //根据id是否存在判断是添加还是修改
         if (StringUtils.isEmpty(studentClass.getId())) {
             //为空，需要添加班级
@@ -35,5 +45,13 @@ public class ClassServiceImpl implements IClassService {
         results.setStatus("0");
 
         return results;
+    }
+
+    @Transactional
+    @Override
+    public Results<String> deleteClass(String id) {
+        Results<String> results = new Results<>();
+        classDao.deleteClass(id);
+        return null;
     }
 }

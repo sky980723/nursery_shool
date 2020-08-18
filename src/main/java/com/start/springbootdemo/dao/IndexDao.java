@@ -1,6 +1,6 @@
 package com.start.springbootdemo.dao;
 
-import com.start.springbootdemo.entity.CompanyUser;
+import com.start.springbootdemo.entity.CompanySchool;
 import com.start.springbootdemo.entity.PublicityApp;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,5 +14,5 @@ public interface IndexDao {
 
     List<PublicityApp> listPublicity(@Param("type") String type);
 
-    CompanyUser getCompanyUser(@Param("account") String account);
+    CompanySchool getCompanySchool(@Param("account") String account);
 }

@@ -2,7 +2,7 @@ package com.start.springbootdemo.entity;
 
 import java.util.Date;
 
-public class CompanyUser {
+public class CompanySchool {
 
     private String id;
 
@@ -10,8 +10,8 @@ public class CompanyUser {
 
     private  String password;
 
-    private Integer isDean;
     //是否是院长，好像这个字段是没啥用的  1：是园长;0:不是园长
+    private Integer isDean;
 
     private Date addtime;
 

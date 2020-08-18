@@ -15,6 +15,8 @@ public class Class {
     //班级名称
     private String className;
 
+    private String schoolId;
+
     private Date addtime;
 
     private Date updatetime;
@@ -57,5 +59,13 @@ public class Class {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
     }
 }

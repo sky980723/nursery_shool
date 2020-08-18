@@ -1,13 +1,14 @@
 package com.start.springbootdemo.service.impl;
 
 import com.start.springbootdemo.dao.IndexDao;
-import com.start.springbootdemo.entity.CompanyUser;
+import com.start.springbootdemo.entity.CompanySchool;
 import com.start.springbootdemo.entity.PublicityApp;
 import com.start.springbootdemo.service.IIndexService;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -30,10 +31,10 @@ public class IndexServiceImpl implements IIndexService {
     }
 
     @Override
-    public Results<CompanyUser> login(String account, String password) {
-        Results<CompanyUser> results = new Results<>();
+    public Results<CompanySchool> login(String account, String password, HttpServletRequest request) {
+        Results<CompanySchool> results = new Results<>();
         //根据账号查询，账号字段在表中加了唯一索引
-        CompanyUser companyUser = indexDao.getCompanyUser(account);
+        CompanySchool companyUser = indexDao.getCompanySchool(account);
         if (companyUser == null) {
             results.setStatus("1");
             results.setMessage("无账号信息");
@@ -49,8 +50,14 @@ public class IndexServiceImpl implements IIndexService {
         }
         results.setStatus("0");
         results.setData(companyUser);
+        //sesstion中放参数
+        request.getSession().setAttribute("schoolId",companyUser.getId());
+        request.getSession().setAttribute("isDean",companyUser.getIsDean());
 
         return results;
     }
+
+
+
 
 }

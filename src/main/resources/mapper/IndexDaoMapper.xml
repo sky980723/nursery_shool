@@ -14,8 +14,8 @@
 
 
 
-    <resultMap type="com.start.springbootdemo.entity.CompanyUser"
-               id="CompanyUserMap">
+    <resultMap type="com.start.springbootdemo.entity.CompanySchool"
+               id="CompanySchoolMap">
         <result column="id" property="id" />
         <result column="account" property="account" />
         <result column="password" property="password" />
@@ -24,7 +24,7 @@
         <result column="updatetime" property="updatetime" />
     </resultMap>
     <!-- 根据账号查询一条记录-->
-    <select id="getCompanyUser" resultMap="CompanyUserMap">
+    <select id="getCompanySchool" resultMap="CompanySchoolMap">
         select * from company_user where account = #{account} order by addtime desc limit 1
     </select>
 </mapper>
