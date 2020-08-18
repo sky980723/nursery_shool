@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 @RestController
 @RequestMapping("/api/index")
 public class IndexController {
@@ -26,7 +29,7 @@ public class IndexController {
      * @return
      */
     @GetMapping("/listPublicity")
-    public Results<List<PublicityApp>> listPublicity(@RequestParam(name = "type", required = true) String type) {
+    public Results<List<PublicityApp>> listPublicity(@RequestParam(name = "type") String type) {
 
         return indexService.listPublicity(type);
     }
