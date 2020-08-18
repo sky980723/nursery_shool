@@ -39,8 +39,8 @@ public class IndexController {
      * @return
      */
     @GetMapping("/login")
-    public Results<CompanyUser> login(@RequestParam(name = "account", required = true) String account,
-                                      @RequestParam(name = "password", required = true) String password) {
+    public Results<CompanyUser> login(@RequestParam(name = "account") String account,
+                                      @RequestParam(name = "password") String password) {
 
         return indexService.login(account, password);
     }

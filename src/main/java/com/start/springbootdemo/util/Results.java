@@ -1,45 +1,49 @@
 package com.start.springbootdemo.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Results<T> {
 
-	private String status;
 
-	private T data;
+    private String status;
 
-	private String message;
+    private T data;
 
-	private int count;
+    private String message;
 
-	public int getCount() {
-		return count;
-	}
+    private int count;
 
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public int getCount() {
+        return count;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setCount(int count) {
+        this.count = count;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public T getData() {
-		return data;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setData(T data) {
-		this.data = data;
-	}
+    public T getData() {
+        return data;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public void setData(T data) {
+        this.data = data;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }
