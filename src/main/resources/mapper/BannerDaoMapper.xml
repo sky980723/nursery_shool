@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.start.springbootdemo.dao.BannerDao">
+    <resultMap type="com.start.springbootdemo.entity.Banner" id="BannerMap">
+        <result column="id" property="id"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="introduce" property="introduce"/>
+        <result column="introduce" property="introduce"/>
+        <result column="types" property="types"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    
+    <select id="listBanner" resultMap="BannerMap">
+        select * from banner where school_id = #{schoolId}
+        <if test="types != null">
+            and types = #{types}
+        </if>
+        order by addtime desc
+    </select>
+
+</mapper>
