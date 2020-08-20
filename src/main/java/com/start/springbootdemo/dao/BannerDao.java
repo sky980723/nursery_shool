@@ -9,4 +9,9 @@ public interface BannerDao {
     List<Banner> listBanner(@Param("schoolId") String schoolId,@Param("types") Integer types);
 
     Integer deleteBanner(@Param("id") String id);
+
+    Integer saveBanner(Banner banner);
+
+    Integer updateBanner(Banner banner);
+
 }

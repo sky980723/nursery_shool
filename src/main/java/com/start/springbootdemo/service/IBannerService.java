@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface IBannerService {
-    Results<List<Banner>> listBanner(String schoolId, Integer types);
+    Results<List<Banner>> listBanner(String schoolId, Integer types, HttpServletRequest request);
 
     Results<String> deleteBanner(String id);
 

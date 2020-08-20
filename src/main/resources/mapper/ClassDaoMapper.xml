@@ -13,7 +13,7 @@
     <insert id="saveClass" parameterType="com.start.springbootdemo.entity.Class">
         insert into `class`
         (id,grade_id,class_name,addtime)
-        values
+         values
         (#{id},#{gradeId},#{className},#{addtime})
     </insert>
     <update id="updateClass" parameterType="com.start.springbootdemo.entity.Class">
@@ -30,6 +30,31 @@
     <delete id="deleteClass">
         delete from `class` where id = #{id}
     </delete>
+    <!--根据年级name和id查询count-->
+    <select id="countByGradeName" resultType="java.lang.Integer">
+        select count(id) from grade where 1=1
+        <if test="gradeName != null and gradeName !=''">
+            and grade_name = #{gradeName}
+        </if>
+        <if test="id != null and id !=''">
+            and id != #{id}
+        </if>
+    </select>
+    
+    <resultMap id="GradeMap" type="com.start.springbootdemo.entity.Grade">
+        <result column="id" property="id"/>
+        <result column="grade_name" property="gradeName"/>
+        <result column="orders" property="orders"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+
+    <insert id="saveGrade" parameterType="com.start.springbootdemo.entity.Grade">
+        insert into grade(id,grade_name,orders,school_id,addtime)
+        values
+        (#{id},#{gradeName},#{orders},#{schoolId},#{addtime})
+    </insert>
 
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.start.springbootdemo.controller;
 
 import com.start.springbootdemo.entity.Class;
+import com.start.springbootdemo.entity.Grade;
 import com.start.springbootdemo.service.IClassService;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,12 @@ public class ClassController {
         return classService.deleteClass(id);
     }
 
+    //添加或修改年级的接口
+    @PostMapping("/saveOrUpdateGrade")
+    public Results<String> saveOrUpdateGrade(@RequestBody Grade grade,HttpServletRequest request) {
+
+        return  classService.saveOrUpdateGrade(grade,request);
+    }
 
 
 }

@@ -7,12 +7,30 @@
         <result column="id" property="id"/>
         <result column="img_url" property="imgUrl"/>
         <result column="introduce" property="introduce"/>
-        <result column="introduce" property="introduce"/>
         <result column="types" property="types"/>
         <result column="school_id" property="schoolId"/>
+        <result column="link" property="link"/>
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <insert id="saveBanner" parameterType="com.start.springbootdemo.entity.Banner">
+        insert into banner (id,img_url,introduce,types,school_id,addtime,link)
+        values
+        (#{id},#{imgUrl},#{introduce},#{types},#{schoolId},#{addtime},#{link})
+    </insert>
+    <update id="updateBanner" parameterType="com.start.springbootdemo.entity.Banner">
+        update banner set
+        <if test="imgUrl != null and imgUrl !=''">
+            img_url = #{imgUrl},
+        </if>
+        <if test="introduce != null and introduce !=''">
+            introduce = #{introduce},
+        </if>
+        <if test="types != null">
+            types = #{types},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
     <delete id="deleteBanner">
         delete from banner where id = #{id}
     </delete>

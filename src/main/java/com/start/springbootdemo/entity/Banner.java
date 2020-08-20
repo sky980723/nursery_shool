@@ -21,6 +21,9 @@ public class Banner {
     //所属园区的id
     private String schoolId;
 
+    private String link;//跳转链接
+
+
     private Date addtime;
 
     private Date updatetime;
@@ -33,10 +36,6 @@ public class Banner {
         this.id = id;
     }
 
-    public Banner(String imgUrl, String schoolId) {
-        this.imgUrl = imgUrl;
-        this.schoolId = schoolId;
-    }
 
     public String getIntroduce() {
         return introduce;
@@ -68,5 +67,21 @@ public class Banner {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

@@ -1,17 +1,22 @@
 package com.start.springbootdemo.service.impl;
 
-import com.aliyuncs.utils.StringUtils;
 import com.start.springbootdemo.dao.BannerDao;
 import com.start.springbootdemo.entity.Banner;
 import com.start.springbootdemo.service.IBannerService;
+import com.start.springbootdemo.util.KeyGen;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Sky
+ */
 @Service
 public class BannerServiceImpl implements IBannerService {
 
@@ -19,10 +24,22 @@ public class BannerServiceImpl implements IBannerService {
     private BannerDao bannerDao;
 
     @Override
-    public Results<List<Banner>> listBanner(String schoolId, Integer types) {
+    public Results<List<Banner>> listBanner(String schoolId, Integer types, HttpServletRequest request) {
         Results<List<Banner>> results = new Results<>();
+        if (StringUtils.isEmpty(schoolId)) {
+            schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        }
+        if (StringUtils.isEmpty(schoolId)) {
+            results.setStatus("1");
+            results.setMessage("登录超时，请重新登录");
+
+            return  results;
+        }
         List<Banner> list = bannerDao.listBanner(schoolId,types);
-        return null;
+        results.setStatus("0");
+        results.setData(list);
+
+        return results;
     }
 
     @Transactional
@@ -47,11 +64,18 @@ public class BannerServiceImpl implements IBannerService {
         }
         if (StringUtils.isEmpty(banner.getId())) {
             //id 为空是添加
+            banner.setId(KeyGen.uuid());
+            banner.setSchoolId(schoolId);
+            banner.setAddtime(new Date());
+            bannerDao.saveBanner(banner);
         }else {
             //ID不为空是修改
-
+            banner.setUpdatetime(new Date());
+            bannerDao.updateBanner(banner);
         }
-        return null;
+        results.setStatus("0");
+
+        return results;
     }
 
 }

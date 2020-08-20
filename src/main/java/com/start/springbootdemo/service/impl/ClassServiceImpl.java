@@ -2,6 +2,7 @@ package com.start.springbootdemo.service.impl;
 
 import com.start.springbootdemo.dao.ClassDao;
 import com.start.springbootdemo.entity.Class;
+import com.start.springbootdemo.entity.Grade;
 import com.start.springbootdemo.service.IClassService;
 import com.start.springbootdemo.util.KeyGen;
 import com.start.springbootdemo.util.Results;
@@ -58,4 +59,33 @@ public class ClassServiceImpl implements IClassService {
 
         return results;
     }
+
+    @Override
+    public Results<String> saveOrUpdateGrade(Grade grade, HttpServletRequest request) {
+        Results<String> results = new Results<>();
+        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        if (StringUtils.isEmpty(schoolId)) {
+            results.setStatus("1");
+            results.setMessage("登录超时，请重新登录");
+
+            return  results;
+        }
+        //不管是添加还是修改，控制不要有重名的(同幼儿园内不要有同名年级)
+        Integer count = classDao.countByGradeName(grade.getGradeName(),grade.getId());
+        if (count > 0) {
+            results.setStatus("1");
+            results.setMessage("年级名不允许重复，请修改~");
+
+            return  results;
+        }
+        if (StringUtils.isEmpty(grade.getId())) {
+            //id为空，是添加
+            grade.setId(KeyGen.uuid());
+            grade.setAddtime(new Date());
+            classDao.saveGrade(grade);
+        }
+
+        return null;
+    }
+
 }
