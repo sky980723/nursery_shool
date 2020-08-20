@@ -13,7 +13,10 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
-    
+    <delete id="deleteBanner">
+        delete from banner where id = #{id}
+    </delete>
+
     <select id="listBanner" resultMap="BannerMap">
         select * from banner where school_id = #{schoolId}
         <if test="types != null">
