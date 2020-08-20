@@ -32,7 +32,7 @@
     </delete>
     <!--根据年级name和id查询count-->
     <select id="countByGradeName" resultType="java.lang.Integer">
-        select count(id) from grade where 1=1
+        select count(id) from grade where school_id = #{schoolId}
         <if test="gradeName != null and gradeName !=''">
             and grade_name = #{gradeName}
         </if>
@@ -40,7 +40,7 @@
             and id != #{id}
         </if>
     </select>
-    
+
     <resultMap id="GradeMap" type="com.start.springbootdemo.entity.Grade">
         <result column="id" property="id"/>
         <result column="grade_name" property="gradeName"/>
@@ -50,11 +50,24 @@
         <result column="updatetime" property="updatetime"/>
     </resultMap>
 
+    <!--添加年级-->
     <insert id="saveGrade" parameterType="com.start.springbootdemo.entity.Grade">
         insert into grade(id,grade_name,orders,school_id,addtime)
         values
         (#{id},#{gradeName},#{orders},#{schoolId},#{addtime})
     </insert>
+
+    <!--修改年级-->
+    <update id="updateGrade" parameterType="com.start.springbootdemo.entity.Grade">
+        update grade set
+        <if test="gradeName != null and gradeName !=''">
+            grade_name = #{gradeName},
+        </if>
+        <if test="orders != null">
+            orders = #{orders},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
 
 
 </mapper>

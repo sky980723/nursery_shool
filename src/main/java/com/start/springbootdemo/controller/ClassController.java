@@ -41,7 +41,12 @@ public class ClassController {
         return classService.deleteClass(id);
     }
 
-    //添加或修改年级的接口
+    /**
+     * 添加或修改年级的接口
+     * @param grade
+     * @param request
+     * @return
+     */
     @PostMapping("/saveOrUpdateGrade")
     public Results<String> saveOrUpdateGrade(@RequestBody Grade grade,HttpServletRequest request) {
 

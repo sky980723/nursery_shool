@@ -14,7 +14,9 @@ public interface ClassDao {
 
     Integer deleteClass(@Param("id") String id);
 
-    Integer countByGradeName(@Param("gradeName") String gradeName,@Param("id") String id);
+    Integer countByGradeName(@Param("gradeName") String gradeName,@Param("id") String id,@Param("schoolId") String schoolId);
 
     Integer saveGrade(Grade grade);
+
+    Integer updateGrade(Grade grade);
 }
