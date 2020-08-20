@@ -2,6 +2,10 @@ package com.start.springbootdemo.entity;
 
 import java.util.Date;
 
+/**
+ * @author Sky
+ * 账号实体类，该表中账号可以登录后台、可以在前端发布园区动态
+ */
 public class CompanySchool {
 
     private String id;

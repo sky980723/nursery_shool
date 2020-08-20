@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * @author Sky
+ * 年级实体类
  */
 public class Grade {
 

@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * @author Sky
+ * banner
  */
 public class Banner {
 
