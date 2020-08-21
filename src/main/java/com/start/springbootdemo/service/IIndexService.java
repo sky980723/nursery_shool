@@ -8,10 +8,17 @@ import com.start.springbootdemo.util.Results;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * @author Sky
+ */
 public interface IIndexService {
-     Results<List<PublicityApp>>  listPublicity(java.lang.String type);
+    Results<List<PublicityApp>> listPublicity(java.lang.String type);
 
-     Results<CompanySchool> login(String account, String password, HttpServletRequest request);
+    Results<CompanySchool> login(String account, String password, HttpServletRequest request);
 
-    Results<String> saveOrUpdateTeacher(Teacher teacher);
+    Results<String> saveOrUpdateTeacher(Teacher teacher, HttpServletRequest request);
+
+    Results<String> deleteTeacher(String id);
+
+    Results<List<Teacher>> listTeacher(String schoolId, String teacherName, HttpServletRequest request, Integer page);
 }

@@ -6,9 +6,11 @@ import com.start.springbootdemo.entity.PublicityApp;
 import com.start.springbootdemo.entity.Teacher;
 import com.start.springbootdemo.service.IIndexService;
 import com.start.springbootdemo.util.KeyGen;
+import com.start.springbootdemo.util.Patterns;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +84,47 @@ public class IndexServiceImpl implements IIndexService {
             teacher.setUpdatetime(new Date());
             indexDao.updateTeacher(teacher);
         }
-        return null;
+        results.setStatus("0");
+
+        return results;
+    }
+
+    @Transactional
+    @Override
+    public Results<String> deleteTeacher(String id) {
+        Results<String> results = new Results<>();
+        indexDao.deleteTeacher(id);
+        results.setStatus("0");
+
+        return results;
+    }
+
+    @Override
+    public Results<List<Teacher>> listTeacher(String schoolId, String teacherName, HttpServletRequest request, Integer page) {
+        Results<List<Teacher>> results = new Results<>();
+        String webSchoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        if (StringUtils.isEmpty(schoolId) && StringUtils.isEmpty(webSchoolId)) {
+            results.setStatus("1");
+            results.setMessage("登录超时，请重新登录");
+
+            return results;
+        }
+        if (StringUtils.isEmpty(schoolId)) {
+            schoolId = webSchoolId;
+        }
+        //这样就保证schoolId字段一定有值
+        Integer pageSize = 0;
+        Integer pageNo = 0;
+        if (page != null) {
+            pageSize = Patterns.pageSize;
+            pageNo = (page - 1) * pageSize;
+        }
+        List<Teacher> list = indexDao.listTeacher(pageNo, pageSize, teacherName, schoolId);
+        Integer count = indexDao.countTeacher(teacherName, schoolId);
+        results.setStatus("0");
+        results.setData(list);
+
+        return results;
     }
 
 

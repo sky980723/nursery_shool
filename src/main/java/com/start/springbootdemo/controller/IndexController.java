@@ -44,14 +44,50 @@ public class IndexController {
     public Results<CompanySchool> login(@RequestParam(name = "account") String account,
                                         @RequestParam(name = "password") String password, HttpServletRequest request) {
 
-        return indexService.login(account, password,request);
+        return indexService.login(account, password, request);
     }
 
-    //添加老师
+    /**
+     * 添加老师
+     *
+     * @param teacher
+     * @param request
+     * @return
+     */
     @PostMapping("/saveOrUpdateTeacher")
-    public Results<String> saveOrUpdateTeacher(@RequestBody Teacher teacher,HttpServletRequest request) {
+    public Results<String> saveOrUpdateTeacher(@RequestBody Teacher teacher, HttpServletRequest request) {
 
-        return indexService.saveOrUpdateTeacher(teacher,request);
+        return indexService.saveOrUpdateTeacher(teacher, request);
     }
+
+    /**
+     * 删除老师
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/deleteTeacher")
+    public Results<String> deleteTeacher(@RequestParam(name = "id", required = true) String id) {
+
+        return indexService.deleteTeacher(id);
+    }
+
+    /**
+     * 获取老师集合(前后端通用接口)
+     * @param schoolId 幼儿园的标识id
+     * @param teacherName 老师姓名 支持模糊查询
+     * @param page 分页参数 非必传
+     * @param request
+     * @return
+     */
+    @GetMapping("/listTeacher")
+    public Results<List<Teacher>> listTeacher(@RequestParam(name = "schoolId", required = false) String schoolId,
+                                              @RequestParam(name = "teacherName", required = false) String teacherName,
+                                              @RequestParam(name = "page", required = false) Integer page,
+                                              HttpServletRequest request) {
+
+        return indexService.listTeacher(schoolId, teacherName, request, page);
+    }
+
 
 }

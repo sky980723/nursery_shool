@@ -31,6 +31,8 @@
         <result column="id" property="id" />
         <result column="teacher_name" property="teacherName" />
         <result column="teacher_img" property="teacherImg" />
+        <result column="mobile" property="mobile" />
+        <result column="school_id" property="schoolId" />
         <result column="addtime" property="addtime" />
         <result column="updatetime" property="updatetime" />
     </resultMap>
@@ -40,9 +42,9 @@
         values
         (#{id},#{teacherName},#{teacherImg},#{addtime})
     </insert>
-    
+
     <update id="updateTeacher" parameterType="com.start.springbootdemo.entity.Teacher">
-        update teacher set 
+        update teacher set
         <if test="teacherName != null and teacherName !=''">
             teacher_name = #{teacherName},
         </if>
@@ -51,4 +53,25 @@
         </if>
         updatetime = #{updatetime} where id = #{id}
     </update>
+    <!--根据id删除老师-->
+    <delete id="deleteTeacher">
+        delete from teacher where id = #{id}
+    </delete>
+    <!--按条件获取老师集合-->
+    <select id="listTeacher" resultMap="TeacherMap">
+        select * from teacher where school_id = #{schoolId}
+        <if test="teacherName != null and teacherName !=''">
+            teacher_name = #{teacherName}
+        </if>
+        order by addtime desc
+        <if test="pageSize != 0">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+    <select id="countTeacher" resultType="java.lang.Integer">
+        select count(id) from teacher where school_id = #{schoolId}
+        <if test="teacherName != null and teacherName !=''">
+            and teacher_name like concat(concat("%",#{teacherName},"%"))
+        </if>
+    </select>
 </mapper>

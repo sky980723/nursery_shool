@@ -20,4 +20,11 @@ public interface IndexDao {
     Integer saveTeacher(Teacher teacher);
 
     Integer updateTeacher(Teacher teacher);
+
+    Integer deleteTeacher(@Param("id") String id);
+
+    List<Teacher> listTeacher(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize,
+                              @Param("teacherName") String teacherName, @Param("schoolId") String schoolId);
+
+    Integer countTeacher(@Param("teacherName") String teacherName,@Param("schoolId") String schoolId);
 }

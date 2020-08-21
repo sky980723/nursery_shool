@@ -15,9 +15,31 @@ public class Teacher {
     //老师头像
     private String teacherImg;
 
+    //手机号
+    private String mobile;
+
+    //幼儿园的标识id
+    private String schoolId;
+
     private Date addtime;
 
     private Date updatetime;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
 
     public String getId() {
         return id;
