@@ -2,13 +2,11 @@ package com.start.springbootdemo.controller;
 
 import com.start.springbootdemo.entity.CompanySchool;
 import com.start.springbootdemo.entity.PublicityApp;
+import com.start.springbootdemo.entity.Teacher;
 import com.start.springbootdemo.service.IIndexService;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -47,6 +45,13 @@ public class IndexController {
                                         @RequestParam(name = "password") String password, HttpServletRequest request) {
 
         return indexService.login(account, password,request);
+    }
+
+    //添加老师
+    @PostMapping("/saveOrUpdateTeacher")
+    public Results<String> saveOrUpdateTeacher(@RequestBody Teacher teacher,HttpServletRequest request) {
+
+        return indexService.saveOrUpdateTeacher(teacher,request);
     }
 
 }

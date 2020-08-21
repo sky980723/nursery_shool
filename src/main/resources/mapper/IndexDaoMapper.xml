@@ -12,8 +12,6 @@
         select * from publicity_app where type = #{type}
     </select>
 
-
-
     <resultMap type="com.start.springbootdemo.entity.CompanySchool"
                id="CompanySchoolMap">
         <result column="id" property="id" />
@@ -27,4 +25,30 @@
     <select id="getCompanySchool" resultMap="CompanySchoolMap">
         select * from company_user where account = #{account} order by addtime desc limit 1
     </select>
+
+    <resultMap type="com.start.springbootdemo.entity.Teacher"
+               id="TeacherMap">
+        <result column="id" property="id" />
+        <result column="teacher_name" property="teacherName" />
+        <result column="teacher_img" property="teacherImg" />
+        <result column="addtime" property="addtime" />
+        <result column="updatetime" property="updatetime" />
+    </resultMap>
+
+    <insert id="saveTeacher" parameterType="com.start.springbootdemo.entity.Teacher">
+        insert into teacher (id,teacher_name,teacher_img,addtime)
+        values
+        (#{id},#{teacherName},#{teacherImg},#{addtime})
+    </insert>
+    
+    <update id="updateTeacher" parameterType="com.start.springbootdemo.entity.Teacher">
+        update teacher set 
+        <if test="teacherName != null and teacherName !=''">
+            teacher_name = #{teacherName},
+        </if>
+        <if test="teacherImg != null and teacherImg !=''">
+            teacher_img = #{teacherImg},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
 </mapper>

@@ -2,6 +2,7 @@ package com.start.springbootdemo.service;
 
 import com.start.springbootdemo.entity.CompanySchool;
 import com.start.springbootdemo.entity.PublicityApp;
+import com.start.springbootdemo.entity.Teacher;
 import com.start.springbootdemo.util.Results;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,4 +13,5 @@ public interface IIndexService {
 
      Results<CompanySchool> login(String account, String password, HttpServletRequest request);
 
+    Results<String> saveOrUpdateTeacher(Teacher teacher);
 }
