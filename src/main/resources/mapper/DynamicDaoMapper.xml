@@ -13,6 +13,10 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <!--根据ID删除一条动态-->
+    <delete id="deleteDynamic">
+        delete from dynamic where id = #{id}
+    </delete>
     <!--添加一条动态-->
     <insert id="saveDynamic" parameterType="com.start.springbootdemo.entity.Dynamic">
         insert into dynamic

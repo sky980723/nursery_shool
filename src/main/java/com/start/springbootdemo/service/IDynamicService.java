@@ -5,4 +5,6 @@ import com.start.springbootdemo.util.Results;
 
 public interface IDynamicService {
     Results<String> saveOrUpdateDynamic(Dynamic dynamic);
+
+    Results<String> deleteDynamic(String id);
 }

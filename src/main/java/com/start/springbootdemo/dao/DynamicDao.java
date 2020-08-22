@@ -11,5 +11,7 @@ public interface DynamicDao {
 
     Integer updateDynamic(Dynamic dynamic);
 
-    Integer deleteDynamicImg(@Param("dynamicId") String id);
+    Integer deleteDynamicImg(@Param("dynamicId") String dynamicId);
+
+    Integer deleteDynamic(@Param("id") String id);
 }

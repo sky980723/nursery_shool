@@ -46,6 +46,19 @@ public class DynamicServiceImpl implements IDynamicService {
         return results;
     }
 
+    @Transactional
+    @Override
+    public Results<String> deleteDynamic(String id) {
+        Results<String> results = new Results<>();
+        //删除动态
+        dynamicDao.deleteDynamic(id);
+        //删除所属该动态的图片集合
+        dynamicDao.deleteDynamicImg(id);
+        results.setStatus("0");
+
+        return results;
+    }
+
     public void saveImgList(Dynamic dynamic, String id) {
         if (dynamic.getImgUrlList() != null && dynamic.getImgUrlList().size() > 0) {
             int orders = 1;
