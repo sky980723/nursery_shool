@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class DynamicServiceImpl implements IDynamicService {
@@ -59,6 +60,13 @@ public class DynamicServiceImpl implements IDynamicService {
         results.setStatus("0");
 
         return results;
+    }
+
+    @Override
+    public Results<List<Dynamic>> listDynamic(Integer page, String schoolId, String type) {
+        Results<List<Dynamic>> results = new Results<>();
+
+        return null;
     }
 
     public void saveImgList(Dynamic dynamic, String id) {

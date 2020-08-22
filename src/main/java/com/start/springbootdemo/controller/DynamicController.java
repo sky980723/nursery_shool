@@ -6,6 +6,8 @@ import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Administrator
  */
@@ -26,10 +28,24 @@ public class DynamicController {
 
         return dynamicService.saveOrUpdateDynamic(dynamic);
     }
-    //删除动态
+
+    /**
+     * 删除动态
+     * @param id
+     * @return
+     */
     @GetMapping("/deleteDynamic")
     public Results<String> deleteDynamic(@RequestParam(name = "id",required = true)String id) {
 
         return dynamicService.deleteDynamic(id);
+    }
+
+    //前端查询动态集合
+    @GetMapping("/listDynamic")
+    public Results<List<Dynamic>> listDynamic(@RequestParam(name = "page")Integer page,
+                                              @RequestParam(name = "schoolId")String schoolId,
+                                              @RequestParam(name = "type",required = false)String type) {
+
+        return dynamicService.listDynamic(page,schoolId,type);
     }
 }
