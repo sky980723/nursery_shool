@@ -54,6 +54,8 @@ public class DynamicServiceImpl implements IDynamicService {
         dynamicDao.deleteDynamic(id);
         //删除所属该动态的图片集合
         dynamicDao.deleteDynamicImg(id);
+        //可以在这个地方加一个操作记录的保存，方便后期追溯
+
         results.setStatus("0");
 
         return results;
