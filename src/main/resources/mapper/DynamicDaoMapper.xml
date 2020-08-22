@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.start.springbootdemo.dao.DynamicDao">
+    <!--园区动态表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.Dynamic" id="DynamicMap">
+        <result column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="company_school_id" property="companySchoolId"/>
+        <result column="type" property="type"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <!--添加一条动态-->
+    <insert id="saveDynamic" parameterType="com.start.springbootdemo.entity.Dynamic">
+        insert into dynamic
+        (id,content,company_school_id,`type`,school_id,addtime)
+        values
+        (#{id},#{content},#{companySchoolId},#{type},#{schoolId},#{addtime})
+    </insert>
+    <!--修改-->
+    <update id="updateDynamic" parameterType="com.start.springbootdemo.entity.Dynamic">
+        update dynamic set
+        <if test="content != null and content !=''">
+            content = #{content},
+        </if>
+        <if test="companySchoolId != null and companySchoolId !=''">
+            company_school_id = #{companySchoolId},
+        </if>
+        <if test="type != null and type !=''">
+            `type` = #{type},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
+
+    <!--园区动态图片表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.DynamicImg" id="DynamicImgMap">
+        <result column="id" property="id"/>
+        <result column="dynamic_id" property="dynamicId"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="orders" property="orders"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <!--添加动态的图片-->
+    <insert id="saveDynamicImg" parameterType="com.start.springbootdemo.entity.DynamicImg">
+        insert into dynamic_img (id,dynamic_id,img_url,orders,addtime)
+        values
+        (#{id},#{dynamicId},#{imgUrl},#{orders},#{addtime})
+    </insert>
+    <!--根据动态的ID删除所属图片-->
+    <delete id="deleteDynamicImg">
+        delete from dynamic_img where dynamic_id = #{dynamicId}
+    </delete>
+</mapper>
