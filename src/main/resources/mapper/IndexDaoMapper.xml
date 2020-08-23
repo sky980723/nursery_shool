@@ -6,10 +6,19 @@
     <resultMap type="com.start.springbootdemo.entity.PublicityApp"
                id="PublicityAppMap">
         <result column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="introduce" property="introduce" />
+        <result column="img_url" property="imgUrl" />
+        <result column="img_describe" property="imgDescribe" />
+        <result column="video_url" property="videoUrl" />
+        <result column="video_describe" property="videoDescribe" />
+        <result column="school_id" property="schoolId" />
+        <result column="addtime" property="addtime" />
+        <result column="updatetime" property="updatetime" />
     </resultMap>
 
     <select id="listPublicity" resultMap="PublicityAppMap">
-        select * from publicity_app where type = #{type}
+        select * from publicity_app where type = #{type} and school_id = #{schoolId}
     </select>
 
     <resultMap type="com.start.springbootdemo.entity.CompanySchool"
@@ -17,13 +26,13 @@
         <result column="id" property="id" />
         <result column="account" property="account" />
         <result column="password" property="password" />
-        <result column="is_dean" property="isDean" />
+        <result column="is_dean" javaType="int" property="isDean" />
         <result column="addtime" property="addtime" />
         <result column="updatetime" property="updatetime" />
     </resultMap>
     <!-- 根据账号查询一条记录-->
     <select id="getCompanySchool" resultMap="CompanySchoolMap">
-        select * from company_user where account = #{account} order by addtime desc limit 1
+        select * from company_school where account = #{account} order by addtime desc limit 1
     </select>
 
     <resultMap type="com.start.springbootdemo.entity.Teacher"
@@ -38,9 +47,9 @@
     </resultMap>
 
     <insert id="saveTeacher" parameterType="com.start.springbootdemo.entity.Teacher">
-        insert into teacher (id,teacher_name,teacher_img,addtime)
+        insert into teacher (id,teacher_name,teacher_img,mobile,school_id,addtime)
         values
-        (#{id},#{teacherName},#{teacherImg},#{addtime})
+        (#{id},#{teacherName},#{teacherImg},#{mobile},#{schoolId},#{addtime})
     </insert>
 
     <update id="updateTeacher" parameterType="com.start.springbootdemo.entity.Teacher">
@@ -61,7 +70,7 @@
     <select id="listTeacher" resultMap="TeacherMap">
         select * from teacher where school_id = #{schoolId}
         <if test="teacherName != null and teacherName !=''">
-            teacher_name = #{teacherName}
+            and teacher_name like concat(concat("%",#{teacherName},"%"))
         </if>
         order by addtime desc
         <if test="pageSize != 0">

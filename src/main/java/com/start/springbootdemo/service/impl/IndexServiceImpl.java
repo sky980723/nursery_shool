@@ -27,9 +27,9 @@ public class IndexServiceImpl implements IIndexService {
     private IndexDao indexDao;
 
     @Override
-    public Results<List<PublicityApp>> listPublicity(String type) {
+    public Results<List<PublicityApp>> listPublicity(String type, String schoolId) {
         Results<List<PublicityApp>> results = new Results<>();
-        List<PublicityApp> list = indexDao.listPublicity(type);
+        List<PublicityApp> list = indexDao.listPublicity(type,schoolId);
         results.setStatus("0");
         results.setData(list);
 
@@ -77,6 +77,7 @@ public class IndexServiceImpl implements IIndexService {
         if (StringUtils.isEmpty(teacher.getId())) {
             //id不存在，是添加
             teacher.setId(KeyGen.uuid());
+            teacher.setSchoolId(schoolId);
             teacher.setAddtime(new Date());
             indexDao.saveTeacher(teacher);
         } else {
@@ -123,6 +124,7 @@ public class IndexServiceImpl implements IIndexService {
         Integer count = indexDao.countTeacher(teacherName, schoolId);
         results.setStatus("0");
         results.setData(list);
+        results.setCount(count);
 
         return results;
     }

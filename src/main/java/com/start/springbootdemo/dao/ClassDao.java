@@ -19,4 +19,11 @@ public interface ClassDao {
     Integer saveGrade(Grade grade);
 
     Integer updateGrade(Grade grade);
+
+    int countClass(@Param("gradeId") String gradeId, @Param("className") String className, @Param("schoolId") String schoolId,
+                   @Param("id") String id);
+
+    Integer getOrders(@Param("schoolId") String schoolId);
+
+    Integer deleteGrade(@Param("id") String id);
 }

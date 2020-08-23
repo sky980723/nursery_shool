@@ -32,6 +32,14 @@ public class ClassServiceImpl implements IClassService {
             return results;
         }
         studentClass.setSchoolId(schoolId);
+        //同年级下不允许存在重名班级
+        int count = classDao.countClass(studentClass.getGradeId(), studentClass.getClassName(), schoolId, studentClass.getId());
+        if (count != 0) {
+            results.setStatus("1");
+            results.setMessage("同年级下不允许存在重名班级，请修改后再次操作");
+
+            return results;
+        }
         //根据id是否存在判断是添加还是修改
         if (StringUtils.isEmpty(studentClass.getId())) {
             //为空，需要添加班级
@@ -71,7 +79,7 @@ public class ClassServiceImpl implements IClassService {
             return results;
         }
         //不管是添加还是修改，控制不要有重名的(同幼儿园内不要有同名年级)
-        Integer count = classDao.countByGradeName(grade.getGradeName(), grade.getId(),schoolId);
+        Integer count = classDao.countByGradeName(grade.getGradeName(), grade.getId(), schoolId);
         if (count > 0) {
             results.setStatus("1");
             results.setMessage("年级名不允许重复，请修改~");
@@ -81,6 +89,9 @@ public class ClassServiceImpl implements IClassService {
         if (StringUtils.isEmpty(grade.getId())) {
             //id为空，是添加
             grade.setId(KeyGen.uuid());
+            grade.setSchoolId(schoolId);
+            //赋值orders
+            grade.setOrders(classDao.getOrders(schoolId) + 1);
             grade.setAddtime(new Date());
             classDao.saveGrade(grade);
         } else {
@@ -88,6 +99,17 @@ public class ClassServiceImpl implements IClassService {
             grade.setUpdatetime(new Date());
             classDao.updateGrade(grade);
         }
+        results.setStatus("0");
+
+        return results;
+    }
+
+    @Transactional
+    @Override
+    public Results<String> deleteGrade(String id) {
+        Results<String> results = new Results<>();
+        //根据id删除一个年级
+        classDao.deleteGrade(id);
         results.setStatus("0");
 
         return results;

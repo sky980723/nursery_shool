@@ -13,7 +13,7 @@ import java.util.List;
 public interface IndexDao {
 
 
-    List<PublicityApp> listPublicity(@Param("type") String type);
+    List<PublicityApp> listPublicity(@Param("type") String type,@Param("schoolId") String schoolId);
 
     CompanySchool getCompanySchool(@Param("account") String account);
 

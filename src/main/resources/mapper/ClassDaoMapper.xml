@@ -7,14 +7,15 @@
         <result column="id" property="id"/>
         <result column="grade_id" property="gradeId"/>
         <result column="class_name" property="className"/>
+        <result column="school_id" property="schoolId"/>
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
     <insert id="saveClass" parameterType="com.start.springbootdemo.entity.Class">
         insert into `class`
-        (id,grade_id,class_name,addtime)
+        (id,grade_id,class_name,school_id,addtime)
          values
-        (#{id},#{gradeId},#{className},#{addtime})
+        (#{id},#{gradeId},#{className},#{schoolId},#{addtime})
     </insert>
     <update id="updateClass" parameterType="com.start.springbootdemo.entity.Class">
         update `class` set
@@ -40,6 +41,18 @@
             and id != #{id}
         </if>
     </select>
+    <select id="countClass" resultType="java.lang.Integer">
+        select count(id) from `class` where school_id = #{schoolId}
+        <if test="className != null and className !=''">
+            and class_name = #{className}
+        </if>
+        <if test="gradeId != null and gradeId !=''">
+            and grade_id = #{gradeId}
+        </if>
+        <if test="id != null and id !=''">
+            and id != #{id}
+        </if>
+    </select>
 
     <resultMap id="GradeMap" type="com.start.springbootdemo.entity.Grade">
         <result column="id" property="id"/>
@@ -49,7 +62,17 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
-
+    <!--根据id删除年级-->
+    <delete id="deleteGrade">
+        delete from grade where id = #{id}
+    </delete>
+    <!--根据幼儿园标识赋值年级的orders-->
+    <select id="getOrders" resultType="java.lang.Integer">
+        select IF(MAX(orders) is null,0,max(orders)) from grade where 1=1
+        <if test="schoolId != null and schoolId !=''">
+            and school_id = #{schoolId}
+        </if>
+    </select>
     <!--添加年级-->
     <insert id="saveGrade" parameterType="com.start.springbootdemo.entity.Grade">
         insert into grade(id,grade_name,orders,school_id,addtime)

@@ -22,15 +22,16 @@ public class IndexController {
     private IIndexService indexService;
 
     /**
-     * 根据type查询不同的宣传
+     * 根据type查询不同的宣传(前端)
      *
      * @param type
      * @return
      */
     @GetMapping("/listPublicity")
-    public Results<List<PublicityApp>> listPublicity(@RequestParam(name = "type") String type) {
+    public Results<List<PublicityApp>> listPublicity(@RequestParam(name = "type") String type,
+                                                     @RequestParam(name = "schoolId")String schoolId) {
 
-        return indexService.listPublicity(type);
+        return indexService.listPublicity(type,schoolId);
     }
 
     /**
@@ -47,8 +48,11 @@ public class IndexController {
         return indexService.login(account, password, request);
     }
 
+    //注册接口
+
+
     /**
-     * 添加老师
+     * 添加或修改老师
      *
      * @param teacher
      * @param request

@@ -41,6 +41,9 @@ public class ClassController {
         return classService.deleteClass(id);
     }
 
+    //前端获取年级集合 同时获取班级集合
+
+
     /**
      * 添加或修改年级的接口
      * @param grade
@@ -51,6 +54,17 @@ public class ClassController {
     public Results<String> saveOrUpdateGrade(@RequestBody Grade grade,HttpServletRequest request) {
 
         return  classService.saveOrUpdateGrade(grade,request);
+    }
+
+    /**
+     * 根据id删除年级
+     * @param id
+     * @return
+     */
+    @GetMapping("/deleteGrade")
+    public Results<String> deleteGrade(@RequestParam(name = "id")String id) {
+
+        return classService.deleteGrade(id);
     }
 
 

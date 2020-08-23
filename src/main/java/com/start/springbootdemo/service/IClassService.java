@@ -12,4 +12,6 @@ public interface IClassService {
     Results<String> deleteClass(String id);
 
     Results<String> saveOrUpdateGrade(Grade grade, HttpServletRequest request);
+
+    Results<String> deleteGrade(String id);
 }

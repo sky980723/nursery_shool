@@ -1,6 +1,5 @@
 package com.start.springbootdemo.service.impl;
 
-import com.aliyuncs.utils.StringUtils;
 import com.start.springbootdemo.dao.DynamicDao;
 import com.start.springbootdemo.entity.Dynamic;
 import com.start.springbootdemo.entity.DynamicImg;
@@ -10,6 +9,7 @@ import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;

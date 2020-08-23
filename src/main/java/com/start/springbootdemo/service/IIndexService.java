@@ -12,7 +12,7 @@ import java.util.List;
  * @author Sky
  */
 public interface IIndexService {
-    Results<List<PublicityApp>> listPublicity(java.lang.String type);
+    Results<List<PublicityApp>> listPublicity(String type, String schoolId);
 
     Results<CompanySchool> login(String account, String password, HttpServletRequest request);
 
