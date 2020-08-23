@@ -9,6 +9,8 @@ public class DynamicImg {
 
     private String id;
 
+    private String imgId;//id字段的别名
+
     private String dynamicId;//动态的ID
 
     private String imgUrl;
@@ -18,6 +20,14 @@ public class DynamicImg {
     private Date addtime;
 
     private  Date updatetime;
+
+    public String getImgId() {
+        return imgId;
+    }
+
+    public void setImgId(String imgId) {
+        this.imgId = imgId;
+    }
 
     public String getId() {
         return id;

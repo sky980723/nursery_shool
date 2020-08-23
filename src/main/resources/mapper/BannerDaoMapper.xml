@@ -29,6 +29,9 @@
         <if test="types != null">
             types = #{types},
         </if>
+        <if test="link != null and link !=''">
+            link = #{link},
+        </if>
         updatetime = #{updatetime} where id = #{id}
     </update>
     <delete id="deleteBanner">

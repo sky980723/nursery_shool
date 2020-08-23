@@ -4,6 +4,8 @@ import com.start.springbootdemo.entity.Class;
 import com.start.springbootdemo.entity.Grade;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author Administrator
  */
@@ -26,4 +28,6 @@ public interface ClassDao {
     Integer getOrders(@Param("schoolId") String schoolId);
 
     Integer deleteGrade(@Param("id") String id);
+
+    List<Grade> listGrade(@Param("schoolId") String schoolId);
 }

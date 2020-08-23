@@ -5,6 +5,6 @@ package com.start.springbootdemo.util;
  */
 public class Patterns {
 
-    public static final int pageSize = 20;
+    public static final int pageSize = 10;
 
 }

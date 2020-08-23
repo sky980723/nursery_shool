@@ -40,7 +40,13 @@ public class DynamicController {
         return dynamicService.deleteDynamic(id);
     }
 
-    //前端查询动态集合
+    /**
+     * 前端查询动态集合
+     * @param page
+     * @param schoolId
+     * @param type
+     * @return
+     */
     @GetMapping("/listDynamic")
     public Results<List<Dynamic>> listDynamic(@RequestParam(name = "page")Integer page,
                                               @RequestParam(name = "schoolId")String schoolId,

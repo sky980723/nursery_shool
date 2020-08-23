@@ -61,6 +61,14 @@
         <result column="school_id" property="schoolId"/>
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
+        <collection property="classList" ofType="com.start.springbootdemo.entity.Class">
+            <id column="classId" property="id"/>
+            <result column="grade_id" property="gradeId"/>
+            <result column="class_name" property="className"/>
+            <result column="school_id" property="schoolId"/>
+            <result column="addtime" property="addtime"/>
+            <result column="updatetime" property="updatetime"/>
+        </collection>
     </resultMap>
     <!--根据id删除年级-->
     <delete id="deleteGrade">
@@ -72,6 +80,12 @@
         <if test="schoolId != null and schoolId !=''">
             and school_id = #{schoolId}
         </if>
+    </select>
+    <select id="listGrade" resultType="com.start.springbootdemo.entity.Grade">
+        select g.*,c.id as classId from grade as g left join `class` as c
+        on c.grade_id = g.id
+        where g.school_id = #{schoolId}
+        order by g.orders
     </select>
     <!--添加年级-->
     <insert id="saveGrade" parameterType="com.start.springbootdemo.entity.Grade">

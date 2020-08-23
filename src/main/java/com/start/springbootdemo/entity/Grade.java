@@ -1,6 +1,8 @@
 package com.start.springbootdemo.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Sky
@@ -20,6 +22,17 @@ public class Grade {
 
     //修改时间
     private Date updatetime;
+
+    //班级集合
+    private List<Class> classList = new ArrayList<>();
+
+    public List<Class> getClassList() {
+        return classList;
+    }
+
+    public void setClassList(List<Class> classList) {
+        this.classList = classList;
+    }
 
     public String getId() {
         return id;

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 班级相关接口
@@ -41,8 +42,16 @@ public class ClassController {
         return classService.deleteClass(id);
     }
 
-    //前端获取年级集合 同时获取班级集合
+    /**
+     * 前端获取年级集合 同时获取班级集合(一对多映射有问题)
+     * @param schoolId
+     * @return
+     */
+    @GetMapping("/listGrade")
+    public Results<List<Grade>> listGrade(@RequestParam(name = "schoolId")String schoolId) {
 
+        return classService.listGrade(schoolId);
+    }
 
     /**
      * 添加或修改年级的接口

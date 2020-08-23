@@ -24,10 +24,17 @@ public class Banner {
 
     private String link;//跳转链接
 
-
     private Date addtime;
 
     private Date updatetime;
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public String getId() {
         return id;

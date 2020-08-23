@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ClassServiceImpl implements IClassService {
@@ -111,6 +112,17 @@ public class ClassServiceImpl implements IClassService {
         //根据id删除一个年级
         classDao.deleteGrade(id);
         results.setStatus("0");
+
+        return results;
+    }
+
+    @Override
+    public Results<List<Grade>> listGrade(String schoolId) {
+        Results<List<Grade>> results = new Results<>();
+        //查询年级集合，同时查询班级集合
+        List<Grade> list = classDao.listGrade(schoolId);
+        results.setStatus("0");
+        results.setData(list);
 
         return results;
     }

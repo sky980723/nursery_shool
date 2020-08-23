@@ -94,6 +94,7 @@
             <version>4.0.6</version>
         </dependency>
         <!--ali sms end-->
+
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>

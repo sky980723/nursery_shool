@@ -5,6 +5,7 @@ import com.start.springbootdemo.entity.Dynamic;
 import com.start.springbootdemo.entity.DynamicImg;
 import com.start.springbootdemo.service.IDynamicService;
 import com.start.springbootdemo.util.KeyGen;
+import com.start.springbootdemo.util.Patterns;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,8 +66,17 @@ public class DynamicServiceImpl implements IDynamicService {
     @Override
     public Results<List<Dynamic>> listDynamic(Integer page, String schoolId, String type) {
         Results<List<Dynamic>> results = new Results<>();
+        Integer pageSize = Patterns.pageSize;
+        Integer pageNo = (page -1)* pageSize;
+        List<Dynamic> list = dynamicDao.listDynamic(pageNo,pageSize,schoolId,type);
+        for (Dynamic dynamic : list) {
+            //按顺序查询图片集合并赋值
+            dynamic.setImgUrlList(dynamicDao.listDynamicImg(dynamic.getId()));
+        }
+        results.setStatus("0");
+        results.setData(list);
 
-        return null;
+        return results;
     }
 
     public void saveImgList(Dynamic dynamic, String id) {
