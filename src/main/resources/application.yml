@@ -1,12 +1,19 @@
 server:
   port: 8080
 
+#spring:
+#  datasource:
+#    name: test
+#    url: jdbc:mysql://127.0.0.1:3306/nursery_school?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: root
+
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://127.0.0.1:3306/nursery_school?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://47.99.194.204:3306/nursery_school?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password: SKY980723
 
 mybatis:
   mapper-locations:
