@@ -1,4 +1,4 @@
-        <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
                 <!DOCTYPE mapper
                         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -20,8 +20,10 @@
     </resultMap>
     <!--添加学生-->
     <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">
-        insert into student(id,`name`,head_img,sex,class_id,birthday,interest,stront_point,honor,school_id,addtime)
-        values (#{id},#{name},#{headImg},#{sex}，#{classId},#{birthday},#{interest},#{strontPoint},#{honor},#{schoolId},#{addtime})
+        insert into student
+            (id,`name`,head_img,sex,class_id,birthday,interest,stront_point,honor,school_id,addtime)
+        values
+            (#{id},#{name},#{headImg},#{sex}，#{classId},#{birthday},#{interest},#{strontPoint},#{honor},#{schoolId},#{addtime})
     </insert>
 
     <select id="listStudent" resultMap="StudentDaoMap">
