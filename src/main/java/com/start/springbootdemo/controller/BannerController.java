@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 @RestController
 @RequestMapping("/api/banner")
 public class BannerController {

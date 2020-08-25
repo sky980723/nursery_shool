@@ -12,9 +12,10 @@ import java.util.List;
 
 /**
  * 班级相关接口
+ * @author Administrator
  */
 @RestController
-@RequestMapping(value = "/api/class")
+@RequestMapping("/api/class")
 public class ClassController {
 
     @Autowired
