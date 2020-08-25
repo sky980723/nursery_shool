@@ -1,5 +1,7 @@
 package com.start.springbootdemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -24,8 +26,10 @@ public class PublicityApp {
 
     private String schoolId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     public String getSchoolId() {

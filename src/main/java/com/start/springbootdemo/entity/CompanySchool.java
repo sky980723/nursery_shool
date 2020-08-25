@@ -1,5 +1,7 @@
 package com.start.springbootdemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -17,8 +19,10 @@ public class CompanySchool {
     //是否是院长，好像这个字段是没啥用的  1：是园长;0:不是园长
     private Integer isDean;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
 

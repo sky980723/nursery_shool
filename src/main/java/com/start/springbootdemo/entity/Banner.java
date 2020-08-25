@@ -1,5 +1,7 @@
 package com.start.springbootdemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -24,8 +26,10 @@ public class Banner {
 
     private String link;//跳转链接
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     public String getImgUrl() {

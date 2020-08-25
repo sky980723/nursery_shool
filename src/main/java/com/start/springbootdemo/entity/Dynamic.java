@@ -1,5 +1,7 @@
 package com.start.springbootdemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,8 +18,10 @@ public class Dynamic {
 
     private String schoolId;//幼儿园的标识
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;//修改时间
 
     //需要上传的图片集合

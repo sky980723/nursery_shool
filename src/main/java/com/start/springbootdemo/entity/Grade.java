@@ -1,5 +1,7 @@
 package com.start.springbootdemo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,9 +20,11 @@ public class Grade {
 
     private String schoolId;//幼儿园的标识
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;//添加时间
 
     //修改时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     //班级集合
