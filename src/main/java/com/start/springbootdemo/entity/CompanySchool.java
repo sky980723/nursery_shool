@@ -14,10 +14,16 @@ public class CompanySchool {
 
     private String account;
 
-    private  String password;
+    private String password;
 
     //是否是院长，好像这个字段是没啥用的  1：是园长;0:不是园长
     private Integer isDean;
+
+    private String nickName;//昵称
+
+    private String headImg;//头像
+
+    private String schoolId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;

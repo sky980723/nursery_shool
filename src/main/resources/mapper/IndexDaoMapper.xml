@@ -33,6 +33,9 @@
         <result column="account" property="account" />
         <result column="password" property="password" />
         <result column="is_dean" javaType="int" property="isDean" />
+        <result column="nick_name"  property="nickName" />
+        <result column="head_img"  property="headImg" />
+        <result column="school_id"  property="schoolId" />
         <result column="addtime" property="addtime" />
         <result column="updatetime" property="updatetime" />
     </resultMap>
