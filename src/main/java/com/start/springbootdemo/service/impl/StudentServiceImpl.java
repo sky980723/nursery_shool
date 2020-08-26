@@ -27,7 +27,10 @@ public class StudentServiceImpl implements IStudentService {
         Integer pageSize = Patterns.pageSize;
         Integer pageNo = (page - 1) * pageSize;
         List<Student> list = studentDao.listStudent(pageNo, pageSize, classId, schoolId, name);
-        return null;
+        results.setStatus("0");
+        results.setData(list);
+
+        return results;
     }
 
     /**
@@ -75,7 +78,7 @@ public class StudentServiceImpl implements IStudentService {
         patriarchStudent.setPatriarchId(patriarchId);
         patriarchStudent.setStudentId(studentId);
         patriarchStudent.setRelation(patriarch.getRelation());
-        patriarch.setAddtime(date);
+        patriarchStudent.setAddtime(date);
         studentDao.savePatriarchStudent(patriarchStudent);
 
         results.setStatus("0");

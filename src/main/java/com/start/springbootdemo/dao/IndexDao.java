@@ -27,4 +27,6 @@ public interface IndexDao {
                               @Param("teacherName") String teacherName, @Param("schoolId") String schoolId);
 
     Integer countTeacher(@Param("teacherName") String teacherName,@Param("schoolId") String schoolId);
+
+    String getIntroduce(@Param("schoolId") String schoolId,@Param("type") int type);
 }

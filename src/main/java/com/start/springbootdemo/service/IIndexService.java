@@ -7,6 +7,7 @@ import com.start.springbootdemo.util.Results;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Sky
@@ -20,5 +21,5 @@ public interface IIndexService {
 
     Results<String> deleteTeacher(String id);
 
-    Results<List<Teacher>> listTeacher(String schoolId, String teacherName, HttpServletRequest request, Integer page);
+    Results<Map<String,Object>>listTeacher(String schoolId, String teacherName, Integer page);
 }

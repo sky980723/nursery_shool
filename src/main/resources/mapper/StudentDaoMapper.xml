@@ -21,9 +21,9 @@
     <!--添加学生-->
     <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">
         insert into student
-            (id,`name`,head_img,sex,class_id,birthday,interest,stront_point,honor,school_id,addtime)
+            (id,`name`,head_img,sex,class_id,birthday,interest,strong_point,honor,school_id,addtime)
         values
-            (#{id},#{name},#{headImg},#{sex}，#{classId},#{birthday},#{interest},#{strontPoint},#{honor},#{schoolId},#{addtime})
+            (#{id},#{name},#{headImg},#{sex},#{classId},#{birthday},#{interest},#{strongPoint},#{honor},#{schoolId},#{addtime})
     </insert>
 
     <select id="listStudent" resultMap="StudentDaoMap">
