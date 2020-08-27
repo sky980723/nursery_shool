@@ -3,10 +3,16 @@ package com.start.springbootdemo.dao;
 import com.start.springbootdemo.entity.Patriarch;
 import com.start.springbootdemo.entity.PatriarchStudent;
 import com.start.springbootdemo.entity.Student;
+import com.start.springbootdemo.entity.StudentApply;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author Sky
+ */
+@Repository
 public interface StudentDao {
     List<Student> listStudent(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize,
                               @Param("classId") String classId, @Param("schoolId") String schoolId, @Param("name") String name);
@@ -20,4 +26,10 @@ public interface StudentDao {
     Integer saveStudent(Student student);
 
     Integer savePatriarchStudent(PatriarchStudent patriarchStudent);
+
+    Integer countStudent(@Param("mobile") String mobile, @Param("studentName") String studentName,@Param("schoolId") String schoolId);
+
+    Integer saveStudentApply(StudentApply studentApply);
+
+    Integer updateStuentApply(StudentApply studentApply);
 }

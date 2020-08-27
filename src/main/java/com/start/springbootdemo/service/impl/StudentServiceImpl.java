@@ -1,9 +1,11 @@
 package com.start.springbootdemo.service.impl;
 
+import com.aliyuncs.utils.StringUtils;
 import com.start.springbootdemo.dao.StudentDao;
 import com.start.springbootdemo.entity.Patriarch;
 import com.start.springbootdemo.entity.PatriarchStudent;
 import com.start.springbootdemo.entity.Student;
+import com.start.springbootdemo.entity.StudentApply;
 import com.start.springbootdemo.service.IStudentService;
 import com.start.springbootdemo.util.KeyGen;
 import com.start.springbootdemo.util.Patterns;
@@ -15,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Sky
+ */
 @Service
 public class StudentServiceImpl implements IStudentService {
 
@@ -81,6 +86,36 @@ public class StudentServiceImpl implements IStudentService {
         patriarchStudent.setAddtime(date);
         studentDao.savePatriarchStudent(patriarchStudent);
 
+        results.setStatus("0");
+
+        return results;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Results<String> saveOrUpdateStudentApply(StudentApply studentApply) {
+        Results<String> results = new Results<>();
+        Date date = new Date();
+        //根据id是否存在判断是添加还是修改
+        if (StringUtils.isEmpty(studentApply.getId())) {
+            //是添加
+            //根据手机号和孩子姓名查询记录，如果存在就不要再次录入了
+            int count = studentDao.countStudent(studentApply.getMobile(), studentApply.getStudentName(),
+                    studentApply.getSchoolId());
+            if (count != 0) {
+                results.setStatus("1");
+                results.setMessage("该宝贝已报名过,请勿重复提交表单~");
+
+                return results;
+            }
+            studentApply.setId(KeyGen.uuid());
+            studentApply.setAddtime(date);
+            studentDao.saveStudentApply(studentApply);
+        } else {
+            //是修改
+            studentApply.setUpdatetime(date);
+            studentDao.updateStuentApply(studentApply);
+        }
         results.setStatus("0");
 
         return results;
