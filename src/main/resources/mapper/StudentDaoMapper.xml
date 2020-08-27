@@ -115,7 +115,7 @@
         from student_apply
         where school_id = #{schoolId}
           and mobile = #{mobile}
-          and stuent_name = #{studentName}
+          and student_name = #{studentName}
     </select>
     <insert id="saveStudentApply" parameterType="com.start.springbootdemo.entity.StudentApply">
         insert into student_apply(id, realname, mobile, student_name, sex, relation, school_id, addtime)
