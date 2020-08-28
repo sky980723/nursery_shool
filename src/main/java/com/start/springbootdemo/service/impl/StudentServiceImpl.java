@@ -29,8 +29,8 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public Results<List<Student>> listStudent(Integer page, String name, String classId, String schoolId) {
         Results<List<Student>> results = new Results<>();
-        Integer pageSize = Patterns.pageSize;
-        Integer pageNo = (page - 1) * pageSize;
+        int pageSize = Patterns.pageSize;
+        int pageNo = (page - 1) * pageSize;
         List<Student> list = studentDao.listStudent(pageNo, pageSize, classId, schoolId, name);
         results.setStatus("0");
         results.setData(list);
