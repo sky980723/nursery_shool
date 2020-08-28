@@ -42,7 +42,7 @@ public class BannerServiceImpl implements IBannerService {
         return results;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Results<String> deleteBanner(String id) {
         Results<String> results = new Results<>();
