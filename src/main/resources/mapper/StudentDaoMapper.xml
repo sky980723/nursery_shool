@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-                <!DOCTYPE mapper
-                        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-        <mapper namespace="com.start.springbootdemo.dao.StudentDao">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.start.springbootdemo.dao.StudentDao">
     <!--学生表的映射-->
     <resultMap type="com.start.springbootdemo.entity.Student" id="StudentDaoMap">
         <result column="id" property="id"/>
@@ -21,9 +21,9 @@
     <!--添加学生-->
     <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">
         insert into student
-            (id,`name`,head_img,sex,class_id,birthday,interest,strong_point,honor,school_id,addtime)
-        values
-            (#{id},#{name},#{headImg},#{sex},#{classId},#{birthday},#{interest},#{strongPoint},#{honor},#{schoolId},#{addtime})
+        (id, `name`, head_img, sex, class_id, birthday, interest, strong_point, honor, school_id, addtime)
+        values (#{id}, #{name}, #{headImg}, #{sex}, #{classId}, #{birthday}, #{interest}, #{strongPoint}, #{honor}, #{schoolId},
+                #{addtime})
     </insert>
 
     <select id="listStudent" resultMap="StudentDaoMap">
@@ -50,13 +50,17 @@
         <result column="updatetime" property="updatetime"/>
     </resultMap>
     <select id="getPatriarch" resultMap="PatriarchMap">
-        select * from patriarch where school_id = #{schoolId} and mobile = #{mobile} order by addtime desc limit 1
+        select *
+        from patriarch
+        where school_id = #{schoolId}
+          and mobile = #{mobile}
+        order by addtime desc
+        limit 1
     </select>
 
     <insert id="savePatriarch">
-        insert into patriarch(id,realname,mobile,wx_head_img,wx_nick_name,open_id,school_id,addtime)
-        values
-        (#{id},#{realname},#{mobile},#{wxHeadImg},#{wxNickName},#{openId},#{schoolId},#{addtime})
+        insert into patriarch(id, realname, mobile, wx_head_img, wx_nick_name, open_id, school_id, addtime)
+        values (#{id}, #{realname}, #{mobile}, #{wxHeadImg}, #{wxNickName}, #{openId}, #{schoolId}, #{addtime})
     </insert>
     <!--修改-->
     <update id="updatePatriarch" parameterType="com.start.springbootdemo.entity.Patriarch">
@@ -89,7 +93,51 @@
         <result column="updatetime" property="updatetime"/>
     </resultMap>
     <insert id="savePatriarchStudent" parameterType="com.start.springbootdemo.entity.PatriarchStudent">
-        insert into patriarch_student(id,patriarch_id,student_id,relation,addtime)
-        values(#{id},#{patriarchId},#{studentId},#{relation},#{addtime})
+        insert into patriarch_student(id, patriarch_id, student_id, relation, addtime)
+        values (#{id}, #{patriarchId}, #{studentId}, #{relation}, #{addtime})
     </insert>
+
+    <!--学生报名表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.StudentApply" id="StudentApplyMap">
+        <result column="id" property="id"/>
+        <result column="realname" property="realname"/>
+        <result column="mobile" property="mobile"/>
+        <result column="student_name" property="studentName"/>
+        <result column="sex" property="sex"/>
+        <result column="relation" property="relation"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <!--根据家长手机号和学生姓名查询报名表的数量-->
+    <select id="countStudent" resultType="java.lang.Integer">
+        select count(id)
+        from student_apply
+        where school_id = #{schoolId}
+          and mobile = #{mobile}
+          and student_name = #{studentName}
+    </select>
+    <insert id="saveStudentApply" parameterType="com.start.springbootdemo.entity.StudentApply">
+        insert into student_apply(id, realname, mobile, student_name, sex, relation, school_id, addtime)
+        values (#{id}, #{realname}, #{mobile}, #{studentName}, #{sex}, #{relation}, #{schoolId}, #{addtime})
+    </insert>
+    <update id="updateStuentApply" parameterType="com.start.springbootdemo.entity.StudentApply">
+        update student_apply set
+        <if test="realname != null and realname !=''">
+            realname = #{realname},
+        </if>
+        <if test="mobile != null and mobile !=''">
+            mobile = #{mobile},
+        </if>
+        <if test="studentName != null and studentName !=''">
+            student_name = #{studentName},
+        </if>
+        <if test="sex != null and sex !=''">
+            sex = #{sex},
+        </if>
+        <if test="relation != null and relation !=''">
+            relation = #{relation},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
 </mapper>

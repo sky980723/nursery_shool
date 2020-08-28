@@ -2,6 +2,7 @@ package com.start.springbootdemo.controller;
 
 import com.start.springbootdemo.entity.Patriarch;
 import com.start.springbootdemo.entity.Student;
+import com.start.springbootdemo.entity.StudentApply;
 import com.start.springbootdemo.service.IStudentService;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,13 @@ public class StudentController {
 
 
     //前端录入小孩，成功后返回小孩的id
+
+    //填充纯表单的操作(报名接口)(添加或修改)
+    @PostMapping("/saveOrUpdateStudentApply")
+    public Results<String> saveOrUpdateStudentApply(@RequestBody StudentApply studentApply) {
+
+        return  studentService.saveOrUpdateStudentApply(studentApply);
+    }
 
 
 }
