@@ -15,6 +15,8 @@
         <result column="strong_point" property="strongPoint"/>
         <result column="honor" property="honor"/>
         <result column="school_id" property="schoolId"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="manifesto" property="manifesto"/>
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
@@ -27,7 +29,15 @@
     </insert>
 
     <select id="listStudent" resultMap="StudentDaoMap">
-        select * from student where school_id = #{schoolId}
+        select *,
+        (select class_name from class where id = s.class_id) as className,
+        (select grade_name from grade where id = (select grade_id from class where id = s.class_id)) as gradeName
+        <if test="openId != null and openId !=''">
+            ,IF((select count(id) from student_like_record where open_id = #{openId} and student_id = s.id and isshow = 1) >
+            0,1,0)
+            as islike
+        </if>
+        from student as s where school_id = #{schoolId}
         <if test="classId != null and classId !=''">
             and class_id = #{classId}
         </if>
@@ -137,6 +147,38 @@
         </if>
         <if test="relation != null and relation !=''">
             relation = #{relation},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
+
+
+    <!--点赞记录表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.StudentLikeRecord" id="StudentLikeRecordMap">
+        <result column="id" property="id"/>
+        <result column="open_id" property="openId"/>
+        <result column="student_id" property="studentId"/>
+        <result column="isshow" property="isshow"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <select id="saveOrUpdateLike" resultMap="StudentLikeRecordMap">
+        select *
+        from student_like_record
+        where open_id = #{openId}
+          and student_id = #{studentId}
+        order by addtime desc
+        limit 1
+    </select>
+    <!--添加点赞记录-->
+    <insert id="saveLikeReocrd" parameterType="com.start.springbootdemo.entity.StudentLikeRecord">
+        insert into student_like_record(id, open_id, student_id, isshow, addtime)
+        values (#{id}, #{openId}, #{studentId}, #{isshow}, #{addtime})
+    </insert>
+    <!--修改点赞记录-->
+    <update id="updateLikeRecord" parameterType="com.start.springbootdemo.entity.StudentLikeRecord">
+        update student_like_record set
+        <if test="isshow != null">
+            isshow = #{isshow},
         </if>
         updatetime = #{updatetime} where id = #{id}
     </update>

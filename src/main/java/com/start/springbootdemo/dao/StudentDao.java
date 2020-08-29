@@ -1,9 +1,6 @@
 package com.start.springbootdemo.dao;
 
-import com.start.springbootdemo.entity.Patriarch;
-import com.start.springbootdemo.entity.PatriarchStudent;
-import com.start.springbootdemo.entity.Student;
-import com.start.springbootdemo.entity.StudentApply;
+import com.start.springbootdemo.entity.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +12,8 @@ import java.util.List;
 @Repository
 public interface StudentDao {
     List<Student> listStudent(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize,
-                              @Param("classId") String classId, @Param("schoolId") String schoolId, @Param("name") String name);
+                              @Param("classId") String classId, @Param("schoolId") String schoolId, @Param("name") String name,
+                              @Param("openId") String openId);
 
     Patriarch getPatriarch(@Param("mobile") String mobile, @Param("schoolId") String schoolId);
 
@@ -32,4 +30,10 @@ public interface StudentDao {
     Integer saveStudentApply(StudentApply studentApply);
 
     Integer updateStuentApply(StudentApply studentApply);
+
+    StudentLikeRecord saveOrUpdateLike(@Param("studentId") String studentId,@Param("openId") String openId);
+
+    Integer saveLikeReocrd(StudentLikeRecord studentLikeRecord);
+
+    Integer updateLikeRecord(StudentLikeRecord studentLikeRecord);
 }

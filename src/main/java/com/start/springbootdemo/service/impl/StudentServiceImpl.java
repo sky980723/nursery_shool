@@ -2,10 +2,7 @@ package com.start.springbootdemo.service.impl;
 
 import com.aliyuncs.utils.StringUtils;
 import com.start.springbootdemo.dao.StudentDao;
-import com.start.springbootdemo.entity.Patriarch;
-import com.start.springbootdemo.entity.PatriarchStudent;
-import com.start.springbootdemo.entity.Student;
-import com.start.springbootdemo.entity.StudentApply;
+import com.start.springbootdemo.entity.*;
 import com.start.springbootdemo.service.IStudentService;
 import com.start.springbootdemo.util.KeyGen;
 import com.start.springbootdemo.util.Patterns;
@@ -27,11 +24,11 @@ public class StudentServiceImpl implements IStudentService {
     private StudentDao studentDao;
 
     @Override
-    public Results<List<Student>> listStudent(Integer page, String name, String classId, String schoolId) {
+    public Results<List<Student>> listStudent(Integer page, String name, String classId, String schoolId, String openId) {
         Results<List<Student>> results = new Results<>();
         int pageSize = Patterns.pageSize;
         int pageNo = (page - 1) * pageSize;
-        List<Student> list = studentDao.listStudent(pageNo, pageSize, classId, schoolId, name);
+        List<Student> list = studentDao.listStudent(pageNo, pageSize, classId, schoolId, name, openId);
         results.setStatus("0");
         results.setData(list);
 
@@ -115,6 +112,37 @@ public class StudentServiceImpl implements IStudentService {
             //是修改
             studentApply.setUpdatetime(date);
             studentDao.updateStuentApply(studentApply);
+        }
+        results.setStatus("0");
+
+        return results;
+    }
+
+    @Override
+    public Results<String> saveOrUpdateLike(String studentId, String openId) {
+        Results<String> results = new Results<>();
+        //根据studentid 和 openID查询点赞记录表中是否存在记录
+        Date date = new Date();
+        StudentLikeRecord
+                studentLikeRecord = studentDao.saveOrUpdateLike(studentId, openId);
+        if (studentLikeRecord == null) {
+            StudentLikeRecord slr = new StudentLikeRecord();
+            //准备点赞,生成一条点赞记录
+            slr.setId(KeyGen.uuid());
+            slr.setStudentId(studentId);
+            slr.setOpenId(openId);
+            slr.setIsshow(1);
+            slr.setAddtime(date);
+            studentDao.saveLikeReocrd(slr);
+        } else {
+            //修改isshow字段，取反
+            if (studentLikeRecord.getIsshow() == 1) {
+                studentLikeRecord.setIsshow(0);
+            } else {
+                studentLikeRecord.setIsshow(1);
+            }
+            studentLikeRecord.setUpdatetime(date);
+            studentDao.updateLikeRecord(studentLikeRecord);
         }
         results.setStatus("0");
 

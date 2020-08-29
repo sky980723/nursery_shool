@@ -29,11 +29,62 @@ public class Student {
 
     private String schoolId;//幼儿园的标识
 
+    private Integer likeCount;//点赞数量
+
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
+
+    private Integer islike;//是否点过赞  1：点过   0：未点赞
+
+    private String className;//班级名称
+
+    private String gradeName;//年级名称
+
+    private String manifesto;//宣言
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
+    }
+
+    public String getManifesto() {
+        return manifesto;
+    }
+
+    public void setManifesto(String manifesto) {
+        this.manifesto = manifesto;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public Integer getIslike() {
+        return islike;
+    }
+
+    public void setIslike(Integer islike) {
+        this.islike = islike;
+    }
 
     public String getSchoolId() {
         return schoolId;
