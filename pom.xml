@@ -139,9 +139,11 @@
         </dependency>
         <!--ali sms end-->
 
-        <!--log4j start-->
-
-        <!--log4j end-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.3.1</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.zxing</groupId>
@@ -246,6 +248,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <executable>true</executable>
+                    <!--true  打包的时候把项目内的jar包打进去-->
                     <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>

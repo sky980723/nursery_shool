@@ -8,6 +8,9 @@ import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.NavigableMap;
 
@@ -32,9 +35,9 @@ public class StudentController {
                                               @RequestParam(name = "schoolId") String schoolId,
                                               @RequestParam(name = "name", required = false) String name,
                                               @RequestParam(name = "classId", required = false) String classId,
-                                              @RequestParam(name = "openId",required = false)String openId) {
+                                              @RequestParam(name = "openId", required = false) String openId) {
 
-        return studentService.listStudent(page, name, classId, schoolId,openId);
+        return studentService.listStudent(page, name, classId, schoolId, openId);
     }
 
     /**
@@ -55,21 +58,44 @@ public class StudentController {
 
     /**
      * 填充纯表单的操作(报名接口)(添加或修改)
+     *
      * @param studentApply
      * @return
      */
     @PostMapping("/saveOrUpdateStudentApply")
     public Results<String> saveOrUpdateStudentApply(@RequestBody StudentApply studentApply) {
 
-        return  studentService.saveOrUpdateStudentApply(studentApply);
+        return studentService.saveOrUpdateStudentApply(studentApply);
     }
 
-    //点赞、取消点赞的接口
+    /**
+     * 点赞、取消点赞的接口
+     *
+     * @param studentId
+     * @param openId
+     * @return
+     */
     @GetMapping("/saveOrUpdateLike")
-    public Results<String> saveOrUpdateLike(@RequestParam(name = "studentId")String studentId,
-                                            @RequestParam(name = "openId")String openId) {
+    public Results<String> saveOrUpdateLike(@RequestParam(name = "studentId") String studentId,
+                                            @RequestParam(name = "openId") String openId) {
 
-        return studentService.saveOrUpdateLike(studentId,openId);
+        return studentService.saveOrUpdateLike(studentId, openId);
+    }
+
+    /**
+     * 获取openID
+     *
+     * @param code
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("/getOpenId")
+    public Results<String> getOpenId(@RequestParam(name = "code") String code, HttpServletRequest request,
+                                     HttpServletResponse response) throws IOException {
+
+        return studentService.getOpenId(code, request, response);
     }
 
 

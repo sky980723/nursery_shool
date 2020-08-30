@@ -4,15 +4,19 @@ import com.aliyuncs.utils.StringUtils;
 import com.start.springbootdemo.dao.StudentDao;
 import com.start.springbootdemo.entity.*;
 import com.start.springbootdemo.service.IStudentService;
-import com.start.springbootdemo.util.KeyGen;
-import com.start.springbootdemo.util.Patterns;
-import com.start.springbootdemo.util.Results;
+import com.start.springbootdemo.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Sky
@@ -147,6 +151,41 @@ public class StudentServiceImpl implements IStudentService {
         results.setStatus("0");
 
         return results;
+    }
+
+    @Override
+    public Results<String> getOpenId(String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Results<String> results = new Results<>();
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+
+        Map<String, String> mapss = new HashMap<String, String>();
+        mapss.put("appid", "");
+        mapss.put("secret", "");
+        mapss.put("code", code);
+        mapss.put("grant_type", "authorization_code");
+
+        Results<byte[]> rbody = Requests.get("https://api.weixin.qq.com/sns/oauth2/access_token", null, mapss);
+        byte[] bytess = rbody.getData();
+        String body = new String(bytess);
+        AccessToken tokens = Json.from(body, AccessToken.class);
+        if (tokens != null) {
+            Map<String, String> map = new HashMap<>();
+            map.put("access_token", tokens.getAccess_token());
+            map.put("openid", tokens.getOpenid());
+            map.put("lang", "zh_CN");
+            Results<byte[]> userinfobody = Requests.get("https://api.weixin.qq.com/sns/userinfo", null, map);
+            byte[] byteuser = userinfobody.getData();
+            String bodyuser = new String(byteuser);
+            WeixinInfo userInfo = Json.from(bodyuser, WeixinInfo.class);
+            if (userInfo != null) {
+
+                // 这个地方是跳转链接
+                response.sendRedirect("http://kz.zhongshicc.com/web/outstandingStudents/index?openId=" + userInfo.getOpenid());
+            }
+
+        }
+        return null;
     }
 
 }
