@@ -188,4 +188,22 @@ public class StudentServiceImpl implements IStudentService {
         return null;
     }
 
+    @Override
+    public Results<Map<String, Object>> getStudent(String openId) {
+        Results<Map<String,Object>> results = new Results<>();
+        Map<String,Object> map = new HashMap<>();
+        //获取绑定的学生对象
+        Student student = studentDao.getStudent(openId);
+        map.put("student",student);
+        //获取相册集合
+        if (student != null) {
+            List<StudentImg> list = studentDao.listStudentImg(student.getId());
+            map.put("imgList",list);
+        }
+        results.setStatus("0");
+        results.setData(map);
+
+        return results;
+    }
+
 }

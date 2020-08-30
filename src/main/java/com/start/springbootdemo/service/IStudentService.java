@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 public interface IStudentService {
     Results<List<Student>> listStudent(Integer page, String name, String classId, String schoolId, String openId);
@@ -21,4 +22,6 @@ public interface IStudentService {
     Results<String> saveOrUpdateLike(String studentId, String openId);
 
     Results<String> getOpenId(String code, HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    Results<Map<String, Object>> getStudent(String openId);
 }

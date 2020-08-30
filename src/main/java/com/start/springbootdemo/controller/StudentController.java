@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableMap;
 
 @RestController
@@ -96,6 +97,13 @@ public class StudentController {
                                      HttpServletResponse response) throws IOException {
 
         return studentService.getOpenId(code, request, response);
+    }
+
+    //获取孩子的名片
+    @GetMapping("/getStudent")
+    public Results<Map<String,Object>> getStudent(@RequestParam(name = "openId")String openId) {
+
+        return studentService.getStudent(openId);
     }
 
 

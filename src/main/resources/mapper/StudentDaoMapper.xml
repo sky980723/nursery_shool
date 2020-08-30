@@ -20,6 +20,16 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+
+    <select id="getStudent" resultMap="StudentDaoMap">
+        select *
+        from student
+        where id = (select student_id
+                    from patriarch_student
+                    where patriarch_id = (select id
+                                          from patriarch
+                                          where open_id = #{openId}));
+    </select>
     <!--添加学生-->
     <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">
         insert into student
@@ -182,4 +192,17 @@
         </if>
         updatetime = #{updatetime} where id = #{id}
     </update>
+
+    <!--点赞记录表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.StudentImg" id="StudentImgMap">
+        <result column="id" property="id"/>
+        <result column="stduent_id" property="stduentId"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="send_word" property="sendWord"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <select id="listStudentImg" resultMap="StudentImgMap">
+        select * from student_img where student_id = #{studentId} order by addtime desc
+    </select>
 </mapper>
