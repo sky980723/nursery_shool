@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -36,7 +37,7 @@ public class Requests {
      * @return
      */
     public static Results<byte[]> get(String url, Map<String, String> headers, Map<String, String> params) {
-        Results<byte[]> result = new Results<byte[]>();
+        Results<byte[]> result = new Results<>();
         if (Objects.nonNull(params) && !params.isEmpty()) {
             List<NameValuePair> pairs = map2pairs(params);
             try {
