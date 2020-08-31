@@ -25,13 +25,14 @@ public interface StudentDao {
 
     Integer savePatriarchStudent(PatriarchStudent patriarchStudent);
 
-    Integer countStudent(@Param("mobile") String mobile, @Param("studentName") String studentName,@Param("schoolId") String schoolId);
+    Integer countStudent(@Param("mobile") String mobile, @Param("studentName") String studentName,
+                         @Param("schoolId") String schoolId);
 
     Integer saveStudentApply(StudentApply studentApply);
 
     Integer updateStuentApply(StudentApply studentApply);
 
-    StudentLikeRecord saveOrUpdateLike(@Param("studentId") String studentId,@Param("openId") String openId);
+    StudentLikeRecord saveOrUpdateLike(@Param("studentId") String studentId, @Param("openId") String openId);
 
     Integer saveLikeReocrd(StudentLikeRecord studentLikeRecord);
 
@@ -40,4 +41,12 @@ public interface StudentDao {
     Student getStudent(@Param("openId") String openId);
 
     List<StudentImg> listStudentImg(@Param("studentId") String studentId);
+
+    Integer saveStudentImg(StudentImg studentImg);
+
+    Integer updateStudentImg(StudentImg studentImg);
+
+    Integer deleteStudentImg(@Param("id") String id);
+
+    Integer updateStudent(Student student);
 }

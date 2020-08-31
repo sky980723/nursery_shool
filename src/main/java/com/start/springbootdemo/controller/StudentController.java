@@ -3,6 +3,7 @@ package com.start.springbootdemo.controller;
 import com.start.springbootdemo.entity.Patriarch;
 import com.start.springbootdemo.entity.Student;
 import com.start.springbootdemo.entity.StudentApply;
+import com.start.springbootdemo.entity.StudentImg;
 import com.start.springbootdemo.service.IStudentService;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,12 +100,46 @@ public class StudentController {
         return studentService.getOpenId(code, request, response);
     }
 
-    //获取孩子的名片
+    //获取code(待测试)
+    @GetMapping("getCode")
+    public Results<String> getCode(HttpServletResponse response) throws IOException {
+
+        return studentService.getCode(response);
+    }
+
+    /**
+     * 获取孩子的名片
+     *
+     * @param openId
+     * @return
+     */
     @GetMapping("/getStudent")
-    public Results<Map<String,Object>> getStudent(@RequestParam(name = "openId")String openId) {
+    public Results<Map<String, Object>> getStudent(@RequestParam(name = "openId") String openId) {
 
         return studentService.getStudent(openId);
     }
+
+    //上传或修改孩子的相册
+    @PostMapping("saveOrUpdateStudentImg")
+    public Results<String> saveOrUpdateStudentImg(@RequestBody StudentImg studentImg) {
+
+        return studentService.saveOrUpdateStudentImg(studentImg);
+    }
+
+    //删除相册
+    @GetMapping("deleteStudentImg")
+    public Results<String> deleteStudentImg(@RequestParam(name = "id")String id) {
+
+        return studentService.deleteStudentImg(id);
+    }
+
+    //添加或者修改孩子信息
+    @PostMapping("saveOrUpdateStudent")
+    public Results<String> saveOrUpdateStudent(@RequestBody Student student) {
+
+        return studentService.saveOrUpdateStudent(student);
+    }
+
 
 
 }

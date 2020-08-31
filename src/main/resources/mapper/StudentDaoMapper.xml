@@ -20,6 +20,41 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <update id="updateStudent" parameterType="com.start.springbootdemo.entity.Student">
+        update student set
+        <if test="name != null and name !=''">
+            name = #{name},
+        </if>
+        <if test="headImg != null and headImg !=''">
+            head_img = #{headImg},
+        </if>
+        <if test="sex != null and sex !=''">
+            sex = #{sex},
+        </if>
+        <if test="classId != null and classId !=''">
+            class_id = #{classId},
+        </if>
+        <if test="birthday != null and birthday !=''">
+            birthday = #{birthday},
+        </if>
+        <if test="interest != null and interest !=''">
+            interest = #{interest},
+        </if>
+        <if test="strongPoint != null and strongPoint !=''">
+            strong_point = #{strongPoint},
+        </if>
+        <if test="honor != null and honor !=''">
+            honor = #{honor},
+        </if>
+        <if test="likeCount != null">
+            like_count = #{likeCount},
+        </if>
+        <if test="manifesto != null and manifesto !=''">
+            manifesto = #{manifesto},
+        </if>
+        updatetime = #{updatetime} where id = #{ids}
+
+    </update>
 
     <select id="getStudent" resultMap="StudentDaoMap">
         select *
@@ -193,7 +228,7 @@
         updatetime = #{updatetime} where id = #{id}
     </update>
 
-    <!--点赞记录表的映射-->
+    <!--学生相册表的映射-->
     <resultMap type="com.start.springbootdemo.entity.StudentImg" id="StudentImgMap">
         <result column="id" property="id"/>
         <result column="stduent_id" property="stduentId"/>
@@ -203,6 +238,28 @@
         <result column="updatetime" property="updatetime"/>
     </resultMap>
     <select id="listStudentImg" resultMap="StudentImgMap">
-        select * from student_img where student_id = #{studentId} order by addtime desc
+        select *
+        from student_img
+        where student_id = #{studentId}
+        order by addtime desc
     </select>
+    <insert id="saveStudentImg" parameterType="com.start.springbootdemo.entity.StudentImg">
+        insert into student_img(id, student_id, img_url, send_word, addtime)
+        values (#{id}, #{studentId}, #{imgUrl}, #{sendWord}, #{addtime})
+    </insert>
+    <update id="updateStudentImg" parameterType="com.start.springbootdemo.entity.StudentImg">
+        update student_img set
+        <if test="imgUrl != null and imgUrl !=''">
+            img_url = #{imgUrl},
+        </if>
+        <if test="sendWord != null and sendWord !=''">
+            send_word = #{sendWord},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
+    <delete id="deleteStudentImg">
+        delete
+        from student_img
+        where id = #{id}
+    </delete>
 </mapper>

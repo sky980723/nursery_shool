@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -190,15 +189,15 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public Results<Map<String, Object>> getStudent(String openId) {
-        Results<Map<String,Object>> results = new Results<>();
-        Map<String,Object> map = new HashMap<>();
+        Results<Map<String, Object>> results = new Results<>();
+        Map<String, Object> map = new HashMap<>();
         //获取绑定的学生对象
         Student student = studentDao.getStudent(openId);
-        map.put("student",student);
+        map.put("student", student);
         //获取相册集合
         if (student != null) {
             List<StudentImg> list = studentDao.listStudentImg(student.getId());
-            map.put("imgList",list);
+            map.put("imgList", list);
         }
         results.setStatus("0");
         results.setData(map);
@@ -206,4 +205,74 @@ public class StudentServiceImpl implements IStudentService {
         return results;
     }
 
+    @Override
+    public Results<String> getCode(HttpServletResponse response) throws IOException {
+
+        Results<Map<String, String>> result = new Results<>();
+
+        String state = null;
+        response.sendRedirect("https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + "这个地方拼接appid"
+                + "&redirect_uri=http%3a%2f%2ftiku.sdymei.com%2fapi%2fwx%2fweb%2f " +
+                "newbank&response_type=code&scope=snsapi_base&state="
+                + state + "#wechat_redirect");
+        return null;
+    }
+
+    @Override
+    public Results<String> saveOrUpdateStudentImg(StudentImg studentImg) {
+        Results<String> results = new Results<>();
+        Date date = new Date();
+        //根据id判断是添加还是修改
+        if (StringUtils.isEmpty(studentImg.getId())) {
+            //是添加
+            studentImg.setId(KeyGen.uuid());
+            studentImg.setAddtime(date);
+            studentDao.saveStudentImg(studentImg);
+        } else {
+            //是修改
+            studentImg.setUpdatetime(date);
+            studentDao.updateStudentImg(studentImg);
+
+        }
+        results.setStatus("0");
+
+        return results;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Results<String> saveOrUpdateStudent(Student student) {
+        Results<String> results = new Results<>();
+        Date date
+                = new Date();
+        //根据id判断是添加还是修改
+        if (StringUtils.isEmpty(student.getId())) {
+            //添加
+            student.setId(KeyGen.uuid());
+            student.setAddtime(date);
+            studentDao.saveStudent(student);
+        } else {
+            //修改
+            student.setUpdatetime(date);
+            studentDao.updateStudent(student);
+        }
+        results.setStatus("0");
+
+        return results;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Results<String> deleteStudentImg(String id) {
+        Results<String> results = new Results<>();
+        //根据id删除一个相册
+        studentDao.deleteStudentImg(id);
+        results.setStatus("0");
+
+        return results;
+    }
+
+
 }
+
+
