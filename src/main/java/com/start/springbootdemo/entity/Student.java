@@ -31,6 +31,7 @@ public class Student {
 
     private Integer likeCount;//点赞数量
 
+    private String manifesto;//宣言
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
@@ -44,7 +45,6 @@ public class Student {
 
     private String gradeName;//年级名称
 
-    private String manifesto;//宣言
 
     public String getGradeName() {
         return gradeName;

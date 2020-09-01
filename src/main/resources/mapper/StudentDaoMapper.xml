@@ -52,7 +52,7 @@
         <if test="manifesto != null and manifesto !=''">
             manifesto = #{manifesto},
         </if>
-        updatetime = #{updatetime} where id = #{ids}
+        updatetime = #{updatetime} where id = #{id}
 
     </update>
 

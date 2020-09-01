@@ -9,7 +9,7 @@ public class StudentImg {
 
     private String id;
 
-    private String stduentId;
+    private String studentId;
 
     private String imgUrl;
 
@@ -27,12 +27,12 @@ public class StudentImg {
         this.id = id;
     }
 
-    public String getStduentId() {
-        return stduentId;
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setStduentId(String stduentId) {
-        this.stduentId = stduentId;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     public String getImgUrl() {

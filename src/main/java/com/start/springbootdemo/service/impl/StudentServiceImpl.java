@@ -243,8 +243,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public Results<String> saveOrUpdateStudent(Student student) {
         Results<String> results = new Results<>();
-        Date date
-                = new Date();
+        Date date = new Date();
         //根据id判断是添加还是修改
         if (StringUtils.isEmpty(student.getId())) {
             //添加

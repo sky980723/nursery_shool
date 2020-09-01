@@ -52,8 +52,8 @@ public class UploadController {
     @RequestMapping(value = "/multi", method = RequestMethod.POST, consumes = "multipart/form-data")
     public Results<List<String>> upload(@RequestParam(value = "file", required = true) MultipartFile[] file)
             throws Exception {
-        Results<List<String>> result = new Results<List<String>>();
-        List<String> items = new ArrayList<String>();
+        Results<List<String>> result = new Results<>();
+        List<String> items = new ArrayList<>();
         for (MultipartFile f : file) {
             String url = process(f);
             items.add(url);

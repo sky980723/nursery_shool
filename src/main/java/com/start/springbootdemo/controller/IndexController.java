@@ -50,6 +50,11 @@ public class IndexController {
     }
 
     //注册接口
+    @PostMapping("/saveCompanySchool")
+    public Results<String> saveCompanySchool(@RequestBody CompanySchool companySchool,HttpServletRequest request) {
+
+        return indexService.saveCompanySchool(companySchool,request);
+    }
 
 
     /**
