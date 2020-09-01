@@ -19,12 +19,13 @@
     </delete>
     <!--查询动态集合，同时查询动态下的图片-->
     <select id="listDynamic" resultMap="DynamicMap">
-        select * from dynamic
-        where school_id = #{schoolId}
+        select d.*,cs.nick_name as nickName,cs.head_img as headImg from dynamic as d left join company_school as cs
+        on cs.id = d.company_school_id
+        where d.school_id = #{schoolId}
         <if test="type != null and type !=''">
-            and `type` = #{type}
+            and d.`type` = #{type}
         </if>
-        order by addtime desc
+        order by d.addtime desc
         limit #{pageNo},#{pageSize}
     </select>
     <!--添加一条动态-->

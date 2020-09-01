@@ -5,51 +5,80 @@
 <mapper namespace="com.start.springbootdemo.dao.IndexDao">
     <resultMap type="com.start.springbootdemo.entity.PublicityApp"
                id="PublicityAppMap">
-        <result column="id" property="id" />
-        <result column="type" property="type" />
-        <result column="introduce" property="introduce" />
-        <result column="img_url" property="imgUrl" />
-        <result column="img_describe" property="imgDescribe" />
-        <result column="video_url" property="videoUrl" />
-        <result column="video_describe" property="videoDescribe" />
-        <result column="school_id" property="schoolId" />
-        <result column="addtime" property="addtime" />
-        <result column="updatetime" property="updatetime" />
+        <result column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="introduce" property="introduce"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="img_describe" property="imgDescribe"/>
+        <result column="video_url" property="videoUrl"/>
+        <result column="video_describe" property="videoDescribe"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
     </resultMap>
 
+    <!--按类型获取展示信息-->
+    <select id="getIntroduce" resultType="java.lang.String">
+        select introduce
+        from publicity_app
+        where school_id = #{schoolId}
+          and `type` = #{type}
+    </select>
+
     <select id="listPublicity" resultMap="PublicityAppMap">
-        select * from publicity_app where type = #{type} and school_id = #{schoolId}
+        select *
+        from publicity_app
+        where type = #{type}
+          and school_id = #{schoolId}
     </select>
 
     <resultMap type="com.start.springbootdemo.entity.CompanySchool"
                id="CompanySchoolMap">
-        <result column="id" property="id" />
-        <result column="account" property="account" />
-        <result column="password" property="password" />
-        <result column="is_dean" javaType="int" property="isDean" />
-        <result column="addtime" property="addtime" />
-        <result column="updatetime" property="updatetime" />
+        <result column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="is_dean" javaType="int" property="isDean"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="head_img" property="headImg"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <!--添加幼儿园的主账号-->
+    <insert id="saveCompanySchool" parameterType="com.start.springbootdemo.entity.CompanySchool">
+        insert into company_school(id, account, password, is_dean, nick_name, head_img, school_id, addtime)
+        values (#{id}, #{account}, #{password}, #{isDean}, #{nickName}, #{headImg}, #{schoolId}, #{addtime})
+    </insert>
+    <!--根据schoolId和 园长身份查询是否存在重复-->
+    <select id="countCompanySchool" resultType="java.lang.Integer">
+        select count(id)
+        from company_school
+        where is_dean = 1
+          and school_id = #{schoolId}
+    </select>
     <!-- 根据账号查询一条记录-->
     <select id="getCompanySchool" resultMap="CompanySchoolMap">
-        select * from company_school where account = #{account} order by addtime desc limit 1
+        select *
+        from company_school
+        where account = #{account}
+        order by addtime desc
+        limit 1
     </select>
 
     <resultMap type="com.start.springbootdemo.entity.Teacher"
                id="TeacherMap">
-        <result column="id" property="id" />
-        <result column="teacher_name" property="teacherName" />
-        <result column="teacher_img" property="teacherImg" />
-        <result column="mobile" property="mobile" />
-        <result column="school_id" property="schoolId" />
-        <result column="addtime" property="addtime" />
-        <result column="updatetime" property="updatetime" />
+        <result column="id" property="id"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="teacher_img" property="teacherImg"/>
+        <result column="mobile" property="mobile"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
     </resultMap>
 
     <insert id="saveTeacher" parameterType="com.start.springbootdemo.entity.Teacher">
-        insert into teacher (id,teacher_name,teacher_img,mobile,school_id,addtime)
-        values
-        (#{id},#{teacherName},#{teacherImg},#{mobile},#{schoolId},#{addtime})
+        insert into teacher (id, teacher_name, teacher_img, mobile, school_id, addtime)
+        values (#{id}, #{teacherName}, #{teacherImg}, #{mobile}, #{schoolId}, #{addtime})
     </insert>
 
     <update id="updateTeacher" parameterType="com.start.springbootdemo.entity.Teacher">
@@ -64,7 +93,9 @@
     </update>
     <!--根据id删除老师-->
     <delete id="deleteTeacher">
-        delete from teacher where id = #{id}
+        delete
+        from teacher
+        where id = #{id}
     </delete>
     <!--按条件获取老师集合-->
     <select id="listTeacher" resultMap="TeacherMap">

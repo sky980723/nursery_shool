@@ -14,10 +14,40 @@ public class CompanySchool {
 
     private String account;
 
-    private  String password;
+    private String password;
 
     //是否是院长，好像这个字段是没啥用的  1：是园长;0:不是园长
     private Integer isDean;
+
+    private String nickName;//昵称
+
+    private String headImg;//头像
+
+    private String schoolId;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;

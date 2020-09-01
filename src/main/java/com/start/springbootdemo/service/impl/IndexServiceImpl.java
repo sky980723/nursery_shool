@@ -12,10 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import sun.plugin2.message.SetAppletSizeMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -29,7 +32,7 @@ public class IndexServiceImpl implements IIndexService {
     @Override
     public Results<List<PublicityApp>> listPublicity(String type, String schoolId) {
         Results<List<PublicityApp>> results = new Results<>();
-        List<PublicityApp> list = indexDao.listPublicity(type,schoolId);
+        List<PublicityApp> list = indexDao.listPublicity(type, schoolId);
         results.setStatus("0");
         results.setData(list);
 
@@ -57,7 +60,7 @@ public class IndexServiceImpl implements IIndexService {
         results.setStatus("0");
         results.setData(companyUser);
         //sesstion中放参数
-        request.getSession().setAttribute("schoolId", companyUser.getId());
+        request.getSession().setAttribute("schoolId", companyUser.getSchoolId());
         request.getSession().setAttribute("isDean", companyUser.getIsDean());
 
         return results;
@@ -101,18 +104,9 @@ public class IndexServiceImpl implements IIndexService {
     }
 
     @Override
-    public Results<List<Teacher>> listTeacher(String schoolId, String teacherName, HttpServletRequest request, Integer page) {
-        Results<List<Teacher>> results = new Results<>();
-        String webSchoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
-        if (StringUtils.isEmpty(schoolId) && StringUtils.isEmpty(webSchoolId)) {
-            results.setStatus("1");
-            results.setMessage("登录超时，请重新登录");
-
-            return results;
-        }
-        if (StringUtils.isEmpty(schoolId)) {
-            schoolId = webSchoolId;
-        }
+    public Results<Map<String, Object>> listTeacher(String schoolId, String teacherName, Integer page) {
+        Results<Map<String,Object>> results = new Results<>();
+        Map<String,Object> map = new HashMap<>();
         //这样就保证schoolId字段一定有值
         Integer pageSize = 0;
         Integer pageNo = 0;
@@ -120,11 +114,38 @@ public class IndexServiceImpl implements IIndexService {
             pageSize = Patterns.pageSize;
             pageNo = (page - 1) * pageSize;
         }
+        //获取老师的集合
         List<Teacher> list = indexDao.listTeacher(pageNo, pageSize, teacherName, schoolId);
-        Integer count = indexDao.countTeacher(teacherName, schoolId);
+        //获取师资水平的富文本字段
+        String introduce = indexDao.getIntroduce(schoolId,4);
+        map.put("teacherList",list);
+        map.put("introduce",introduce);
         results.setStatus("0");
-        results.setData(list);
-        results.setCount(count);
+        results.setData(map);
+
+        return results;
+    }
+
+    @Override
+    public Results<String> saveCompanySchool(CompanySchool companySchool,HttpServletRequest request) {
+        Results<String> results = new Results<>();
+        //注册嘛 isDean字段是1，根据schoolId和isdean == 1的查询count，防止重复
+        int count = indexDao.countCompanySchool(companySchool.getSchoolId());
+        if (count != 0) {
+            results.setStatus("1");
+            results.setMessage("幼儿园标识已存在，请修改~");
+
+            return results;
+        }
+        //添加一个幼儿园的主账号
+        companySchool.setId(KeyGen.uuid());
+        companySchool.setIsDean(1);
+        companySchool.setAddtime(new Date());
+        indexDao.saveCompanySchool(companySchool);
+        //注册成功后直接登录
+        request.getSession().setAttribute("schoolId",companySchool.getSchoolId());
+        request.getSession().setAttribute("isDean",1);
+        results.setStatus("0");
 
         return results;
     }

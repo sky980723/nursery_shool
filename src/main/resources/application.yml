@@ -9,6 +9,12 @@ server:
 #    password: root
 
 spring:
+  # Single file max size
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
   datasource:
     name: test
     url: jdbc:mysql://47.99.194.204:3306/nursery_school?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai

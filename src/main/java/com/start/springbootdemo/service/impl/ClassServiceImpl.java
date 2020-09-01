@@ -121,6 +121,9 @@ public class ClassServiceImpl implements IClassService {
         Results<List<Grade>> results = new Results<>();
         //查询年级集合，同时查询班级集合
         List<Grade> list = classDao.listGrade(schoolId);
+        for (Grade grade : list) {
+            grade.setClassList(classDao.listClass(grade.getId()));
+        }
         results.setStatus("0");
         results.setData(list);
 

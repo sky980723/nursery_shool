@@ -30,4 +30,6 @@ public interface ClassDao {
     Integer deleteGrade(@Param("id") String id);
 
     List<Grade> listGrade(@Param("schoolId") String schoolId);
+
+    List<Class> listClass(@Param("gradeId") String gradeId);
 }
