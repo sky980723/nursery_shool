@@ -36,6 +36,44 @@
             <version>2.1.2</version>
         </dependency>
 
+        <!--HUAWEI START-->
+        <dependency>
+            <groupId>com.esdk</groupId>
+            <artifactId>obs</artifactId>
+            <version>3.19.11.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/libs/esdk-obs-java-3.19.11.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.esdk</groupId>
+            <artifactId>obs.java</artifactId>
+            <version>3.19.11.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/libs/esdk-obs-java-3.19.11.1-javadoc.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.esdk</groupId>
+            <artifactId>obs.java.optimization</artifactId>
+            <version>3.19.11.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/libs/esdk-obs-java-optimization-3.19.11.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.11.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/libs/okhttp-3.11.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com</groupId>
+            <artifactId>okio</artifactId>
+            <version>1.14.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/libs/okio-1.14.0.jar</systemPath>
+        </dependency>
+        <!--HUAWEI END-->
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -101,9 +139,11 @@
         </dependency>
         <!--ali sms end-->
 
-        <!--log4j start-->
-
-        <!--log4j end-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.3.1</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.zxing</groupId>
@@ -208,6 +248,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <executable>true</executable>
+                    <!--true  打包的时候把项目内的jar包打进去-->
+                    <includeSystemScope>true</includeSystemScope>
                 </configuration>
             </plugin>
             <plugin>

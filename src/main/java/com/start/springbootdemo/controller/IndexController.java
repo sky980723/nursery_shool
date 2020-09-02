@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator 这个里面放一些基本宣传的东西(前端首页介绍及相关维护接口、园区动态相关接口)
@@ -49,6 +50,11 @@ public class IndexController {
     }
 
     //注册接口
+    @PostMapping("/saveCompanySchool")
+    public Results<String> saveCompanySchool(@RequestBody CompanySchool companySchool,HttpServletRequest request) {
+
+        return indexService.saveCompanySchool(companySchool,request);
+    }
 
 
     /**
@@ -77,20 +83,18 @@ public class IndexController {
     }
 
     /**
-     * 获取老师集合(前后端通用接口)
+     * 获取老师集合，同时获取师资介绍的富文本(前端接口)
      * @param schoolId 幼儿园的标识id
      * @param teacherName 老师姓名 支持模糊查询
      * @param page 分页参数 非必传
-     * @param request
      * @return
      */
     @GetMapping("/listTeacher")
-    public Results<List<Teacher>> listTeacher(@RequestParam(name = "schoolId", required = false) String schoolId,
-                                              @RequestParam(name = "teacherName", required = false) String teacherName,
-                                              @RequestParam(name = "page", required = false) Integer page,
-                                              HttpServletRequest request) {
+    public Results<Map<String,Object>> listTeacher(@RequestParam(name = "schoolId", required = false) String schoolId,
+                                    @RequestParam(name = "teacherName", required = false) String teacherName,
+                                    @RequestParam(name = "page", required = false) Integer page) {
 
-        return indexService.listTeacher(schoolId, teacherName, request, page);
+        return indexService.listTeacher(schoolId, teacherName, page);
     }
 
 

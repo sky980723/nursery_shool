@@ -6,17 +6,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 public class Dynamic {
 
     private String id;
 
-    private String content;//内容
+    /**
+     * 内容
+     */
+    private String content;
 
-    private String companySchoolId;//发布人的ID
+    /**
+     * 发布人的ID
+     */
+    private String companySchoolId;
 
-    private String type;//动态所属标签的ID
+    /**
+     * 动态所属标签的ID
+     */
+    private String type;
 
-    private String schoolId;//幼儿园的标识
+    //幼儿园的标识
+    private String schoolId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
@@ -26,6 +39,26 @@ public class Dynamic {
 
     //需要上传的图片集合
     private List<String> imgUrlList = new ArrayList<>();
+
+    private String nickName;//发布人对外展示的昵称
+
+    private String headImg;//发布人的头像
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
 
     public List<String> getImgUrlList() {
         return imgUrlList;

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.start.springbootdemo.dao.StudentDao">
+    <!--学生表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.Student" id="StudentDaoMap">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="head_img" property="headImg"/>
+        <result column="sex" property="sex"/>
+        <result column="class_id" property="classId"/>
+        <result column="birthday" property="birthday"/>
+        <result column="interest" property="interest"/>
+        <result column="strong_point" property="strongPoint"/>
+        <result column="honor" property="honor"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="manifesto" property="manifesto"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <update id="updateStudent" parameterType="com.start.springbootdemo.entity.Student">
+        update student set
+        <if test="name != null and name !=''">
+            name = #{name},
+        </if>
+        <if test="headImg != null and headImg !=''">
+            head_img = #{headImg},
+        </if>
+        <if test="sex != null and sex !=''">
+            sex = #{sex},
+        </if>
+        <if test="classId != null and classId !=''">
+            class_id = #{classId},
+        </if>
+        <if test="birthday != null and birthday !=''">
+            birthday = #{birthday},
+        </if>
+        <if test="interest != null and interest !=''">
+            interest = #{interest},
+        </if>
+        <if test="strongPoint != null and strongPoint !=''">
+            strong_point = #{strongPoint},
+        </if>
+        <if test="honor != null and honor !=''">
+            honor = #{honor},
+        </if>
+        <if test="likeCount != null">
+            like_count = #{likeCount},
+        </if>
+        <if test="manifesto != null and manifesto !=''">
+            manifesto = #{manifesto},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+
+    </update>
+
+    <select id="getStudent" resultMap="StudentDaoMap">
+        select *
+        from student
+        where id = (select student_id
+                    from patriarch_student
+                    where patriarch_id = (select id
+                                          from patriarch
+                                          where open_id = #{openId}));
+    </select>
+    <!--添加学生-->
+    <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">
+        insert into student
+        (id, `name`, head_img, sex, class_id, birthday, interest, strong_point, honor, school_id, addtime)
+        values (#{id}, #{name}, #{headImg}, #{sex}, #{classId}, #{birthday}, #{interest}, #{strongPoint}, #{honor}, #{schoolId},
+                #{addtime})
+    </insert>
+
+    <select id="listStudent" resultMap="StudentDaoMap">
+        select *,
+        (select class_name from class where id = s.class_id) as className,
+        (select grade_name from grade where id = (select grade_id from class where id = s.class_id)) as gradeName
+        <if test="openId != null and openId !=''">
+            ,IF((select count(id) from student_like_record where open_id = #{openId} and student_id = s.id and isshow = 1) >
+            0,1,0)
+            as islike
+        </if>
+        from student as s where school_id = #{schoolId}
+        <if test="classId != null and classId !=''">
+            and class_id = #{classId}
+        </if>
+        <if test="name != null and name !=''">
+            and (name like concat(concat("%",#{name},"%")))
+        </if>
+        limit #{pageNo},#{pageSize}
+    </select>
+
+    <!--家长表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.Patriarch" id="PatriarchMap">
+        <result column="id" property="id"/>
+        <result column="realname" property="realname"/>
+        <result column="mobile" property="mobile"/>
+        <result column="wx_head_img" property="wxHeadImg"/>
+        <result column="wx_nick_name" property="wxNickName"/>
+        <result column="open_id" property="openId"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <select id="getPatriarch" resultMap="PatriarchMap">
+        select *
+        from patriarch
+        where school_id = #{schoolId}
+          and mobile = #{mobile}
+        order by addtime desc
+        limit 1
+    </select>
+
+    <insert id="savePatriarch">
+        insert into patriarch(id, realname, mobile, wx_head_img, wx_nick_name, open_id, school_id, addtime)
+        values (#{id}, #{realname}, #{mobile}, #{wxHeadImg}, #{wxNickName}, #{openId}, #{schoolId}, #{addtime})
+    </insert>
+    <!--修改-->
+    <update id="updatePatriarch" parameterType="com.start.springbootdemo.entity.Patriarch">
+        update patriarch set
+        <if test="realname != null and realname !=''">
+            realname = #{realname},
+        </if>
+        <if test="mobile != null and mobile !=''">
+            mobile = #{mobile},
+        </if>
+        <if test="wxHeadImg != null and wxHeadImg !=''">
+            wx_head_img = #{wxHeadImg},
+        </if>
+        <if test="wxNickName != null and wxNickName !=''">
+            wx_nick_name = #{wxNickName},
+        </if>
+        <if test="openId != null and openId !=''">
+            open_id = #{openId},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
+
+    <!--家长_学生关系表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.PatriarchStudent" id="PatriarchStudentMap">
+        <result column="id" property="id"/>
+        <result column="patriarch_id" property="patriarchId"/>
+        <result column="student_id" property="studentId"/>
+        <result column="relation" property="relation"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <insert id="savePatriarchStudent" parameterType="com.start.springbootdemo.entity.PatriarchStudent">
+        insert into patriarch_student(id, patriarch_id, student_id, relation, addtime)
+        values (#{id}, #{patriarchId}, #{studentId}, #{relation}, #{addtime})
+    </insert>
+
+    <!--学生报名表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.StudentApply" id="StudentApplyMap">
+        <result column="id" property="id"/>
+        <result column="realname" property="realname"/>
+        <result column="mobile" property="mobile"/>
+        <result column="student_name" property="studentName"/>
+        <result column="sex" property="sex"/>
+        <result column="relation" property="relation"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <!--根据家长手机号和学生姓名查询报名表的数量-->
+    <select id="countStudent" resultType="java.lang.Integer">
+        select count(id)
+        from student_apply
+        where school_id = #{schoolId}
+          and mobile = #{mobile}
+          and student_name = #{studentName}
+    </select>
+    <insert id="saveStudentApply" parameterType="com.start.springbootdemo.entity.StudentApply">
+        insert into student_apply(id, realname, mobile, student_name, sex, relation, school_id, addtime)
+        values (#{id}, #{realname}, #{mobile}, #{studentName}, #{sex}, #{relation}, #{schoolId}, #{addtime})
+    </insert>
+    <update id="updateStuentApply" parameterType="com.start.springbootdemo.entity.StudentApply">
+        update student_apply set
+        <if test="realname != null and realname !=''">
+            realname = #{realname},
+        </if>
+        <if test="mobile != null and mobile !=''">
+            mobile = #{mobile},
+        </if>
+        <if test="studentName != null and studentName !=''">
+            student_name = #{studentName},
+        </if>
+        <if test="sex != null and sex !=''">
+            sex = #{sex},
+        </if>
+        <if test="relation != null and relation !=''">
+            relation = #{relation},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
+
+
+    <!--点赞记录表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.StudentLikeRecord" id="StudentLikeRecordMap">
+        <result column="id" property="id"/>
+        <result column="open_id" property="openId"/>
+        <result column="student_id" property="studentId"/>
+        <result column="isshow" property="isshow"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <select id="saveOrUpdateLike" resultMap="StudentLikeRecordMap">
+        select *
+        from student_like_record
+        where open_id = #{openId}
+          and student_id = #{studentId}
+        order by addtime desc
+        limit 1
+    </select>
+    <!--添加点赞记录-->
+    <insert id="saveLikeReocrd" parameterType="com.start.springbootdemo.entity.StudentLikeRecord">
+        insert into student_like_record(id, open_id, student_id, isshow, addtime)
+        values (#{id}, #{openId}, #{studentId}, #{isshow}, #{addtime})
+    </insert>
+    <!--修改点赞记录-->
+    <update id="updateLikeRecord" parameterType="com.start.springbootdemo.entity.StudentLikeRecord">
+        update student_like_record set
+        <if test="isshow != null">
+            isshow = #{isshow},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
+
+    <!--学生相册表的映射-->
+    <resultMap type="com.start.springbootdemo.entity.StudentImg" id="StudentImgMap">
+        <result column="id" property="id"/>
+        <result column="stduent_id" property="stduentId"/>
+        <result column="img_url" property="imgUrl"/>
+        <result column="send_word" property="sendWord"/>
+        <result column="addtime" property="addtime"/>
+        <result column="updatetime" property="updatetime"/>
+    </resultMap>
+    <select id="listStudentImg" resultMap="StudentImgMap">
+        select *
+        from student_img
+        where student_id = #{studentId}
+        order by addtime desc
+    </select>
+    <insert id="saveStudentImg" parameterType="com.start.springbootdemo.entity.StudentImg">
+        insert into student_img(id, student_id, img_url, send_word, addtime)
+        values (#{id}, #{studentId}, #{imgUrl}, #{sendWord}, #{addtime})
+    </insert>
+    <update id="updateStudentImg" parameterType="com.start.springbootdemo.entity.StudentImg">
+        update student_img set
+        <if test="imgUrl != null and imgUrl !=''">
+            img_url = #{imgUrl},
+        </if>
+        <if test="sendWord != null and sendWord !=''">
+            send_word = #{sendWord},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
+    <delete id="deleteStudentImg">
+        delete
+        from student_img
+        where id = #{id}
+    </delete>
+</mapper>

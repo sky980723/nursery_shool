@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * 班级相关接口
+ *
  * @author Administrator
  */
 @RestController
@@ -23,56 +24,61 @@ public class ClassController {
 
     /**
      * 后台添加或修改班级
+     *
      * @param studentClass
      * @return
      */
     @PostMapping("/saveOrUpdateClass")
     public Results<String> saveOrUpdateClass(@RequestBody Class studentClass, HttpServletRequest request) {
 
-        return classService.saveOrUpdateClass(studentClass,request);
+        return classService.saveOrUpdateClass(studentClass, request);
     }
 
     /**
      * 删除班级
+     *
      * @param id 班级的id
      * @return
      */
     @GetMapping("/deleteClass")
-    public Results<String> deleteClass(@RequestParam(name = "id")String id) {
+    public Results<String> deleteClass(@RequestParam(name = "id") String id) {
 
         return classService.deleteClass(id);
     }
 
     /**
      * 前端获取年级集合 同时获取班级集合(一对多映射有问题)
+     *
      * @param schoolId
      * @return
      */
     @GetMapping("/listGrade")
-    public Results<List<Grade>> listGrade(@RequestParam(name = "schoolId")String schoolId) {
+    public Results<List<Grade>> listGrade(@RequestParam(name = "schoolId") String schoolId) {
 
         return classService.listGrade(schoolId);
     }
 
     /**
      * 添加或修改年级的接口
+     *
      * @param grade
      * @param request
      * @return
      */
     @PostMapping("/saveOrUpdateGrade")
-    public Results<String> saveOrUpdateGrade(@RequestBody Grade grade,HttpServletRequest request) {
+    public Results<String> saveOrUpdateGrade(@RequestBody Grade grade, HttpServletRequest request) {
 
-        return  classService.saveOrUpdateGrade(grade,request);
+        return classService.saveOrUpdateGrade(grade, request);
     }
 
     /**
      * 根据id删除年级
+     *
      * @param id
      * @return
      */
     @GetMapping("/deleteGrade")
-    public Results<String> deleteGrade(@RequestParam(name = "id")String id) {
+    public Results<String> deleteGrade(@RequestParam(name = "id") String id) {
 
         return classService.deleteGrade(id);
     }

@@ -5,35 +5,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 /**
- * 班级实体类
+ * 家长-学生关系表
+ * @author Sky
  */
-public class Class {
+public class PatriarchStudent {
 
     private String id;
 
-    //年级id
-    private String gradeId;
+    private String patriarchId;
 
-    //班级名称
-    private String className;
+    private String studentId;
 
-    private String schoolId;
-
-    private int orders;
+    private String relation;//关系
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
-
-    public int getOrders() {
-        return orders;
-    }
-
-    public void setOrders(int orders) {
-        this.orders = orders;
-    }
 
     public String getId() {
         return id;
@@ -43,20 +32,28 @@ public class Class {
         this.id = id;
     }
 
-    public String getGradeId() {
-        return gradeId;
+    public String getPatriarchId() {
+        return patriarchId;
     }
 
-    public void setGradeId(String gradeId) {
-        this.gradeId = gradeId;
+    public void setPatriarchId(String patriarchId) {
+        this.patriarchId = patriarchId;
     }
 
-    public String getClassName() {
-        return className;
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
     }
 
     public Date getAddtime() {
@@ -73,13 +70,5 @@ public class Class {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
-    }
-
-    public String getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(String schoolId) {
-        this.schoolId = schoolId;
     }
 }
