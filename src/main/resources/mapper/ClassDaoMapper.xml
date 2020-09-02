@@ -78,7 +78,7 @@
             and school_id = #{schoolId}
         </if>
     </select>
-    <select id="listGrade" resultType="com.start.springbootdemo.entity.Grade">
+    <select id="listGrade" resultMap="GradeMap">
         select * from grade
         where school_id = #{schoolId}
         order by orders,addtime

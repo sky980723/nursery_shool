@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import sun.plugin2.message.SetAppletSizeMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
