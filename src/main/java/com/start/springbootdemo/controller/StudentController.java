@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 
+/**
+ * @author Sky
+ */
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
@@ -56,7 +59,7 @@ public class StudentController {
     }
 
 
-    //前端录入小孩，成功后返回小孩的id
+
 
     /**
      * 填充纯表单的操作(报名接口)(添加或修改)
@@ -139,6 +142,8 @@ public class StudentController {
 
         return studentService.saveOrUpdateStudent(student);
     }
+
+    //后台批量上传孩子
 
 
 

@@ -3,6 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.start.springbootdemo.dao.IndexDao">
+
+    <!--按类型获取展示信息-->
     <resultMap type="com.start.springbootdemo.entity.PublicityApp"
                id="PublicityAppMap">
         <result column="id" property="id"/>
@@ -17,7 +19,6 @@
         <result column="updatetime" property="updatetime"/>
     </resultMap>
 
-    <!--按类型获取展示信息-->
     <select id="getIntroduce" resultType="java.lang.String">
         select introduce
         from publicity_app
@@ -44,18 +45,60 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
-    <!--添加幼儿园的主账号-->
+    <select id="countCompanySchool" resultType="java.lang.Integer">
+        select count(id)
+        from company_school
+        where school_id = #{schoolId}
+        <if test="isDean != null">
+            and is_dean = 1
+        </if>
+        <if test="account != null and account !=''">
+            and account = #{account}
+        </if>
+        <if test="id != null and id !=''">
+            and id != #{id}
+        </if>
+        <if test="condition != null and condition !=''">
+            and (account like concat(concat("%",#{condition},"%")) or nick_name like concat(concat("%",#{condition},"%")))
+        </if>
+    </select>
+    <!--查询账号集合-->
+    <select id="listCompanySchool" resultMap="CompanySchoolMap">
+        select * from company_school where school_id = #{schoolId}
+        <if test="condition != null and condition !=''">
+            and (account like concat(concat("%",#{condition},"%")) or nick_name like concat(concat("%",#{condition},"%")))
+        </if>
+        order by addtime desc
+        limit #{pageNo},#{pageSize}
+    </select>
+    <!--删除账号-->
+    <delete id="deleteCompanySchool">
+        delete
+        from company_school
+        where id = #{id}
+    </delete>
+    <!--修改账号-->
+    <update id="updateCompanySchool" parameterType="com.start.springbootdemo.entity.CompanySchool">
+        update company_school set
+        <if test="account != null and account !=''">
+            account = #{account},
+        </if>
+        <if test="password != null and password !=''">
+            password = #{password},
+        </if>
+        <if test="nickName != null and nickName !=''">
+            nick_name = #{nickName},
+        </if>
+        <if test="headImg != null and headImg !=''">
+            head_img = #{headImg},
+        </if>
+        updatetime = #{updatetime} where id = #{id}
+    </update>
+    <!--添加幼儿园的账号-->
     <insert id="saveCompanySchool" parameterType="com.start.springbootdemo.entity.CompanySchool">
         insert into company_school(id, account, password, is_dean, nick_name, head_img, school_id, addtime)
         values (#{id}, #{account}, #{password}, #{isDean}, #{nickName}, #{headImg}, #{schoolId}, #{addtime})
     </insert>
-    <!--根据schoolId和 园长身份查询是否存在重复-->
-    <select id="countCompanySchool" resultType="java.lang.Integer">
-        select count(id)
-        from company_school
-        where is_dean = 1
-          and school_id = #{schoolId}
-    </select>
     <!-- 根据账号查询一条记录-->
     <select id="getCompanySchool" resultMap="CompanySchoolMap">
         select *

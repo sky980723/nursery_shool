@@ -4,7 +4,6 @@ import com.start.springbootdemo.entity.CompanySchool;
 import com.start.springbootdemo.entity.PublicityApp;
 import com.start.springbootdemo.entity.Teacher;
 import com.start.springbootdemo.util.Results;
-import org.apache.http.protocol.HTTP;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,4 +24,10 @@ public interface IIndexService {
     Results<Map<String,Object>>listTeacher(String schoolId, String teacherName, Integer page);
 
     Results<String> saveCompanySchool(CompanySchool companySchool, HttpServletRequest request);
+
+    Results<String> saveOrUpdateComapanySchool(CompanySchool companySchool, HttpServletRequest request);
+
+    Results<String> deleteCompanySchool(String id, HttpServletRequest request);
+
+    Results<List<CompanySchool>> listCompanySchool(int page, String condition, HttpServletRequest request);
 }

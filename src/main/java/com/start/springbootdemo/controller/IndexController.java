@@ -30,9 +30,9 @@ public class IndexController {
      */
     @GetMapping("/listPublicity")
     public Results<List<PublicityApp>> listPublicity(@RequestParam(name = "type") String type,
-                                                     @RequestParam(name = "schoolId")String schoolId) {
+                                                     @RequestParam(name = "schoolId") String schoolId) {
 
-        return indexService.listPublicity(type,schoolId);
+        return indexService.listPublicity(type, schoolId);
     }
 
     /**
@@ -49,11 +49,11 @@ public class IndexController {
         return indexService.login(account, password, request);
     }
 
-    //注册接口
+    //注册接口，注册成功后登陆
     @PostMapping("/saveCompanySchool")
-    public Results<String> saveCompanySchool(@RequestBody CompanySchool companySchool,HttpServletRequest request) {
+    public Results<String> saveCompanySchool(@RequestBody CompanySchool companySchool, HttpServletRequest request) {
 
-        return indexService.saveCompanySchool(companySchool,request);
+        return indexService.saveCompanySchool(companySchool, request);
     }
 
 
@@ -84,18 +84,43 @@ public class IndexController {
 
     /**
      * 获取老师集合，同时获取师资介绍的富文本(前端接口)
-     * @param schoolId 幼儿园的标识id
+     *
+     * @param schoolId    幼儿园的标识id
      * @param teacherName 老师姓名 支持模糊查询
-     * @param page 分页参数 非必传
+     * @param page        分页参数 非必传
      * @return
      */
     @GetMapping("/listTeacher")
-    public Results<Map<String,Object>> listTeacher(@RequestParam(name = "schoolId", required = false) String schoolId,
-                                    @RequestParam(name = "teacherName", required = false) String teacherName,
-                                    @RequestParam(name = "page", required = false) Integer page) {
+    public Results<Map<String, Object>> listTeacher(@RequestParam(name = "schoolId", required = false) String schoolId,
+                                                    @RequestParam(name = "teacherName", required = false) String teacherName,
+                                                    @RequestParam(name = "page", required = false) Integer page) {
 
         return indexService.listTeacher(schoolId, teacherName, page);
     }
 
+
+    //后台维护子账号的接口
+    @PostMapping("/saveOrUpdateComapanySchool")
+    public Results<String> saveOrUpdateComapanySchool(@RequestBody CompanySchool companySchool,HttpServletRequest request) {
+
+        return indexService.saveOrUpdateComapanySchool(companySchool,request);
+    }
+
+    //后台删除子账号
+    @GetMapping("/deleteCompanySchool")
+    public Results<String> deleteCompanySchool(@RequestParam(name = "id")String id,HttpServletRequest request) {
+
+        return indexService.deleteCompanySchool(id,request);
+    }
+
+    //后台获取所有账号的集合
+    @GetMapping("/listCompanySchool")
+    public Results<List<CompanySchool>> listCompanySchool(@RequestParam(name = "page")int page,
+                                                          @RequestParam(name = "condition",required = false)String condition,
+                                                          HttpServletRequest request) {
+
+        return indexService.listCompanySchool(page,condition,request);
+
+    }
 
 }

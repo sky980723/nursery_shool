@@ -15,7 +15,7 @@ import java.util.List;
 public interface IndexDao {
 
 
-    List<PublicityApp> listPublicity(@Param("type") String type,@Param("schoolId") String schoolId);
+    List<PublicityApp> listPublicity(@Param("type") String type, @Param("schoolId") String schoolId);
 
     CompanySchool getCompanySchool(@Param("account") String account);
 
@@ -28,11 +28,20 @@ public interface IndexDao {
     List<Teacher> listTeacher(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize,
                               @Param("teacherName") String teacherName, @Param("schoolId") String schoolId);
 
-    Integer countTeacher(@Param("teacherName") String teacherName,@Param("schoolId") String schoolId);
+    Integer countTeacher(@Param("teacherName") String teacherName, @Param("schoolId") String schoolId);
 
-    String getIntroduce(@Param("schoolId") String schoolId,@Param("type") int type);
+    String getIntroduce(@Param("schoolId") String schoolId, @Param("type") int type);
 
-    int countCompanySchool(@Param("schoolId") String schoolId);
+    int countCompanySchool(@Param("schoolId") String schoolId, @Param("isDean") Integer isDean, @Param("account") String account,
+                           @Param("id") String id, @Param("condition") String condition);
 
     Integer saveCompanySchool(CompanySchool companySchool);
+
+    Integer updateCompanySchool(CompanySchool companySchool);
+
+    Integer deleteCompanySchool(@Param("id") String id);
+
+    List<CompanySchool> listCompanySchool(@Param("pageNo") int pageNo, @Param("pageSize") int pageSize,
+                                          @Param("condition") String condition,
+                                          @Param("schoolId") String schoolId);
 }
