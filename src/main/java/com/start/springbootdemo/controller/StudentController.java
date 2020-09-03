@@ -118,9 +118,10 @@ public class StudentController {
      * @return
      */
     @GetMapping("/getStudent")
-    public Results<Map<String, Object>> getStudent(@RequestParam(name = "openId") String openId) {
+    public Results<Map<String, Object>> getStudent(@RequestParam(name = "openId") String openId,
+												   @RequestParam(name="schoolId")String schoolId) {
 
-        return studentService.getStudent(openId);
+        return studentService.getStudent(openId,schoolId);
     }
 
     //上传或修改孩子的相册

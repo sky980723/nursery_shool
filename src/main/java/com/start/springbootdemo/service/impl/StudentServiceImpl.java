@@ -195,16 +195,18 @@ public class StudentServiceImpl implements IStudentService {
 	}
 
 	@Override
-	public Results<Map<String, Object>> getStudent(String openId) {
+	public Results<Map<String, Object>> getStudent(String openId, String schoolId) {
 		Results<Map<String, Object>> results = new Results<>();
 		Map<String, Object> map = new HashMap<>();
 		//获取绑定的学生对象
-		Student student = studentDao.getStudent(openId);
-		map.put("student", student);
+		List<Student> studentList = studentDao.getStudent(openId,schoolId);
+		map.put("student", studentList);
 		//获取相册集合
-		if (student != null) {
-			List<StudentImg> list = studentDao.listStudentImg(student.getId());
-			map.put("imgList", list);
+		if (studentList != null) {
+			for (Student student : studentList) {
+				List<StudentImg> list = studentDao.listStudentImg(student.getId());
+				student.setStudentImgList(list);
+			}
 		}
 		results.setStatus("0");
 		results.setData(map);
@@ -376,7 +378,7 @@ public class StudentServiceImpl implements IStudentService {
 	@Override
 	public int ExcelDoing(List<Student> list, int sta, int end) {
 		list = list.subList(sta, end);
-		studentDao.insertStudentList(list);
+		//studentDao.insertStudentList(list);
 
 		return 0;
 	}

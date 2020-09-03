@@ -70,7 +70,7 @@
                     from patriarch_student
                     where patriarch_id = (select id
                                           from patriarch
-                                          where open_id = #{openId}));
+                                          where open_id = #{openId} and school_id = #{schoolId})) and school_id = #{schoolId};
     </select>
     <!--添加学生-->
     <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">

@@ -38,7 +38,7 @@ public interface StudentDao {
 
 	Integer updateLikeRecord(StudentLikeRecord studentLikeRecord);
 
-	Student getStudent(@Param("openId") String openId);
+	List<Student> getStudent(@Param("openId") String openId,@Param("schoolId") String schoolId);
 
 	List<StudentImg> listStudentImg(@Param("studentId") String studentId);
 

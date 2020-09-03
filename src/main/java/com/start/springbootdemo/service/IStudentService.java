@@ -25,7 +25,7 @@ public interface IStudentService {
 
     Results<String> getOpenId(String code, HttpServletRequest request, HttpServletResponse response) throws IOException;
 
-    Results<Map<String, Object>> getStudent(String openId);
+    Results<Map<String, Object>> getStudent(String openId, String schoolId);
 
     Results<String> getCode(HttpServletResponse response) throws IOException ;
 

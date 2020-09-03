@@ -2,7 +2,9 @@ package com.start.springbootdemo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Sky
@@ -46,6 +48,16 @@ public class Student {
     private String className;//班级名称
 
     private String gradeName;//年级名称
+
+    private List<StudentImg> studentImgList = new ArrayList<>();
+
+    public List<StudentImg> getStudentImgList() {
+        return studentImgList;
+    }
+
+    public void setStudentImgList(List<StudentImg> studentImgList) {
+        this.studentImgList = studentImgList;
+    }
 
     public String getAttendSchoolTime() {
         return attendSchoolTime;
