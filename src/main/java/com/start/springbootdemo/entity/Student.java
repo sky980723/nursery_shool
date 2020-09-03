@@ -33,6 +33,8 @@ public class Student {
 
     private String manifesto;//宣言
 
+    private String attendSchoolTime;//入学年份
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
 
@@ -45,6 +47,13 @@ public class Student {
 
     private String gradeName;//年级名称
 
+    public String getAttendSchoolTime() {
+        return attendSchoolTime;
+    }
+
+    public void setAttendSchoolTime(String attendSchoolTime) {
+        this.attendSchoolTime = attendSchoolTime;
+    }
 
     public String getGradeName() {
         return gradeName;

@@ -20,6 +20,11 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <!--按条件查询count-->
+    <select id="countStudenByClassName" resultType="java.lang.Integer">
+        select count(id) from student where school_id = #{schoolId} and name = #{studentName}
+        and class_id = (select id from class where class_name = #{className})
+    </select>
     <update id="updateStudent" parameterType="com.start.springbootdemo.entity.Student">
         update student set
         <if test="name != null and name !=''">
@@ -52,8 +57,10 @@
         <if test="manifesto != null and manifesto !=''">
             manifesto = #{manifesto},
         </if>
+        <if test="attendSchoolTime != null and attendSchoolTime !=''">
+            attend_school_time = #{attendSchoolTime},
+        </if>
         updatetime = #{updatetime} where id = #{id}
-
     </update>
 
     <select id="getStudent" resultMap="StudentDaoMap">
@@ -68,9 +75,11 @@
     <!--添加学生-->
     <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">
         insert into student
-        (id, `name`, head_img, sex, class_id, birthday, interest, strong_point, honor, school_id, addtime)
-        values (#{id}, #{name}, #{headImg}, #{sex}, #{classId}, #{birthday}, #{interest}, #{strongPoint}, #{honor}, #{schoolId},
-                #{addtime})
+        (id, `name`, head_img, sex, class_id, birthday, interest, strong_point, honor, school_id, addtime,
+         attend_school_time)
+        values (#{id}, #{name}, #{headImg}, #{sex}, #{classId}, #{birthday}, #{interest}, #{strongPoint}, #{honor},
+                #{schoolId},
+                #{addtime}, #{attendSchoolTime})
     </insert>
 
     <select id="listStudent" resultMap="StudentDaoMap">
@@ -78,7 +87,8 @@
         (select class_name from class where id = s.class_id) as className,
         (select grade_name from grade where id = (select grade_id from class where id = s.class_id)) as gradeName
         <if test="openId != null and openId !=''">
-            ,IF((select count(id) from student_like_record where open_id = #{openId} and student_id = s.id and isshow = 1) >
+            ,IF((select count(id) from student_like_record where open_id = #{openId} and student_id = s.id and isshow =
+            1) >
             0,1,0)
             as islike
         </if>

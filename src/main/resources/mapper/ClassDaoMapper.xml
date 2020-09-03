@@ -12,15 +12,34 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <select id="getClassId" resultType="java.lang.String">
+        select id
+        from class
+        where school_id = #{schoolId}
+          and class_name = #{className}
+          and grade_id in (select id from grade where school_id = #{schoolId} and grade_name = #{gradeName})
+        order by addtime desc
+        limit 1
+    </select>
+    <!--按条件查询班级查询count-->
+    <select id="countClassByNames" resultType="java.lang.Integer">
+        select count(id)
+        from class
+        where school_id = #{schoolId}
+          and class_name = #{className}
+          and grade_id in (select id from grade where school_id = #{schoolId} and grade_name = #{gradeName})
+    </select>
     <!--根据年级id查询班级集合  按顺序-->
     <select id="listClass" resultMap="ClassMap">
-        select * from `class` where grade_id = #{gradeId} order by orders,addtime;
+        select *
+        from `class`
+        where grade_id = #{gradeId}
+        order by orders, addtime;
     </select>
     <insert id="saveClass" parameterType="com.start.springbootdemo.entity.Class">
         insert into `class`
-        (id,grade_id,class_name,school_id,addtime)
-         values
-        (#{id},#{gradeId},#{className},#{schoolId},#{addtime})
+            (id, grade_id, class_name, school_id, addtime)
+        values (#{id}, #{gradeId}, #{className}, #{schoolId}, #{addtime})
     </insert>
     <update id="updateClass" parameterType="com.start.springbootdemo.entity.Class">
         update `class` set
@@ -34,7 +53,9 @@
         where id = #{id}
     </update>
     <delete id="deleteClass">
-        delete from `class` where id = #{id}
+        delete
+        from `class`
+        where id = #{id}
     </delete>
     <!--根据年级name和id查询count-->
     <select id="countByGradeName" resultType="java.lang.Integer">
@@ -69,7 +90,9 @@
     </resultMap>
     <!--根据id删除年级-->
     <delete id="deleteGrade">
-        delete from grade where id = #{id}
+        delete
+        from grade
+        where id = #{id}
     </delete>
     <!--根据幼儿园标识赋值年级的orders-->
     <select id="getOrders" resultType="java.lang.Integer">
@@ -79,15 +102,15 @@
         </if>
     </select>
     <select id="listGrade" resultMap="GradeMap">
-        select * from grade
+        select *
+        from grade
         where school_id = #{schoolId}
-        order by orders,addtime
+        order by orders, addtime
     </select>
     <!--添加年级-->
     <insert id="saveGrade" parameterType="com.start.springbootdemo.entity.Grade">
-        insert into grade(id,grade_name,orders,school_id,addtime)
-        values
-        (#{id},#{gradeName},#{orders},#{schoolId},#{addtime})
+        insert into grade(id, grade_name, orders, school_id, addtime)
+        values (#{id}, #{gradeName}, #{orders}, #{schoolId}, #{addtime})
     </insert>
 
     <!--修改年级-->

@@ -5,6 +5,7 @@ import com.start.springbootdemo.entity.Student;
 import com.start.springbootdemo.entity.StudentApply;
 import com.start.springbootdemo.entity.StudentImg;
 import com.start.springbootdemo.util.Results;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,4 +34,8 @@ public interface IStudentService {
     Results<String> saveOrUpdateStudent(Student student);
 
     Results<String> deleteStudentImg(String id);
+
+	Results<String> improtExcel(MultipartFile file, HttpServletRequest request);
+
+    int ExcelDoing(List<Student> list, int sta, int size);
 }

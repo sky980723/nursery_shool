@@ -8,6 +8,7 @@ import com.start.springbootdemo.service.IStudentService;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -144,6 +145,12 @@ public class StudentController {
     }
 
     //后台批量上传孩子
+    @PostMapping(value = "/improtExcel",consumes = "multipart/form-data")
+    public Results<String> improtExcel(@RequestParam(name = "file")MultipartFile file,
+                                       HttpServletRequest request) {
+
+        return studentService.improtExcel(file,request);
+    }
 
 
 
