@@ -34,7 +34,6 @@ public class TestBatchInsertThread implements Runnable {
 		try {
 			if (list != null && list.size() > 0) {
 				// 执行真正的处理
-				// seaCustomerServiceImpl.ExcelDoing(sheet, sta, size, secondaryId);
 				SpringUtils.getBean(IStudentService.class).ExcelDoing(list, sta, size);
 			}
 			// 执行完让线程直接进入等待

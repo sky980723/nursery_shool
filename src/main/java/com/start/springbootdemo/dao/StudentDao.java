@@ -11,44 +11,47 @@ import java.util.List;
  */
 @Repository
 public interface StudentDao {
-	List<Student> listStudent(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize,
-							  @Param("classId") String classId, @Param("schoolId") String schoolId, @Param("name") String name,
-							  @Param("openId") String openId);
+    List<Student> listStudent(@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize,
+                              @Param("classId") String classId, @Param("schoolId") String schoolId, @Param("name") String name,
+                              @Param("openId") String openId);
 
-	Patriarch getPatriarch(@Param("mobile") String mobile, @Param("schoolId") String schoolId);
+    Patriarch getPatriarch(@Param("mobile") String mobile, @Param("schoolId") String schoolId, @Param("openId") String openId);
 
-	Integer savePatriarch(Patriarch patriarch);
+    Integer savePatriarch(Patriarch patriarch);
 
-	Integer updatePatriarch(Patriarch patriarch);
+    Integer updatePatriarch(Patriarch patriarch);
 
-	Integer saveStudent(Student student);
+    Integer saveStudent(Student student);
 
-	Integer savePatriarchStudent(PatriarchStudent patriarchStudent);
+    Integer savePatriarchStudent(PatriarchStudent patriarchStudent);
 
-	Integer countStudent(@Param("mobile") String mobile, @Param("studentName") String studentName,
-						 @Param("schoolId") String schoolId);
+    Integer countStudent(@Param("mobile") String mobile, @Param("studentName") String studentName,
+                         @Param("schoolId") String schoolId);
 
-	Integer saveStudentApply(StudentApply studentApply);
+    Integer saveStudentApply(StudentApply studentApply);
 
-	Integer updateStuentApply(StudentApply studentApply);
+    Integer updateStuentApply(StudentApply studentApply);
 
-	StudentLikeRecord saveOrUpdateLike(@Param("studentId") String studentId, @Param("openId") String openId);
+    StudentLikeRecord saveOrUpdateLike(@Param("studentId") String studentId, @Param("openId") String openId);
 
-	Integer saveLikeReocrd(StudentLikeRecord studentLikeRecord);
+    Integer saveLikeReocrd(StudentLikeRecord studentLikeRecord);
 
-	Integer updateLikeRecord(StudentLikeRecord studentLikeRecord);
+    Integer updateLikeRecord(StudentLikeRecord studentLikeRecord);
 
-	List<Student> getStudent(@Param("openId") String openId,@Param("schoolId") String schoolId);
+    List<Student> getStudent(@Param("openId") String openId, @Param("schoolId") String schoolId);
 
-	List<StudentImg> listStudentImg(@Param("studentId") String studentId);
+    List<StudentImg> listStudentImg(@Param("studentId") String studentId);
 
-	Integer saveStudentImg(StudentImg studentImg);
+    Integer saveStudentImg(StudentImg studentImg);
 
-	Integer updateStudentImg(StudentImg studentImg);
+    Integer updateStudentImg(StudentImg studentImg);
 
-	Integer deleteStudentImg(@Param("id") String id);
+    Integer deleteStudentImg(@Param("id") String id);
 
-	Integer updateStudent(Student student);
+    Integer updateStudent(Student student);
 
-	int countStudenByClassName(@Param("schoolId") String schoolId, @Param("className") String className, @Param("studentName") String studentName);
+    int countStudenByClassName(@Param("schoolId") String schoolId, @Param("className") String className,
+                               @Param("studentName") String studentName,@Param("gradeName") String gradeName);
+
+    Integer insertStudentList(@Param("list") List<Student> list);
 }

@@ -17,13 +17,34 @@
         <result column="school_id" property="schoolId"/>
         <result column="like_count" property="likeCount"/>
         <result column="manifesto" property="manifesto"/>
+        <result column="attend_school_time" property="attendSchoolTime"/>
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <!--批量添加学生-->
+    <insert id="insertStudentList" parameterType="com.start.springbootdemo.entity.Student">
+        insert into student(id,name,sex,class_id,attend_school_time,addtime)
+        values
+        <foreach collection="list" item="stu" separator=",">
+            (#{stu.id},#{stu.name},#{stu.sex},#{stu.classId},#{stu.attendSchoolTime},#{stu.addtime})
+        </foreach>
+    </insert>
     <!--按条件查询count-->
     <select id="countStudenByClassName" resultType="java.lang.Integer">
-        select count(id) from student where school_id = #{schoolId} and name = #{studentName}
-        and class_id = (select id from class where class_name = #{className})
+        select count(id)
+        from student
+        where school_id = #{schoolId}
+          and name = #{studentName}
+          and class_id in (select id
+                          from class
+                          where class_name = #{className}
+                            and school_id = #{schoolId}
+                            and grade_id in
+                                (select id
+                                 from grade
+                                 where grade_name =
+                                       #{gradeName}
+                                   and school_id = #{schoolId}))
     </select>
     <update id="updateStudent" parameterType="com.start.springbootdemo.entity.Student">
         update student set
@@ -64,13 +85,17 @@
     </update>
 
     <select id="getStudent" resultMap="StudentDaoMap">
-        select *
-        from student
+        select s.*,
+               (select class_name from class where id = s.class_id)                                         as className,
+               (select grade_name from grade where id = (select grade_id from class where id = s.class_id)) as gradeName
+        from student as s
         where id = (select student_id
                     from patriarch_student
                     where patriarch_id = (select id
                                           from patriarch
-                                          where open_id = #{openId} and school_id = #{schoolId})) and school_id = #{schoolId};
+                                          where open_id = #{openId}
+                                            and school_id = #{schoolId}))
+          and school_id = #{schoolId};
     </select>
     <!--添加学生-->
     <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">
@@ -103,6 +128,22 @@
     </select>
 
     <!--家长表的映射-->
+    <select id="getPatriarch" resultMap="PatriarchMap">
+        select *
+        from patriarch
+        where 1=1
+        <if test="schoolId != null and schoolId !=''">
+            and school_id = #{schoolId}
+        </if>
+        <if test="mobile != null and mobile !=''">
+            and mobile = #{mobile}
+        </if>
+        <if test="openId != null and openId !=''">
+            and open_id = #{openId}
+        </if>
+        order by addtime desc
+        limit 1
+    </select>
     <resultMap type="com.start.springbootdemo.entity.Patriarch" id="PatriarchMap">
         <result column="id" property="id"/>
         <result column="realname" property="realname"/>
@@ -114,14 +155,6 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
-    <select id="getPatriarch" resultMap="PatriarchMap">
-        select *
-        from patriarch
-        where school_id = #{schoolId}
-          and mobile = #{mobile}
-        order by addtime desc
-        limit 1
-    </select>
 
     <insert id="savePatriarch">
         insert into patriarch(id, realname, mobile, wx_head_img, wx_nick_name, open_id, school_id, addtime)
