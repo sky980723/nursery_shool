@@ -21,6 +21,10 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <!--修改学生的点赞数-->
+    <update id="updateLikeCount">
+        update student set like_count = like_count + #{likeCount} where id = #{studentId}
+    </update>
     <!--批量添加学生-->
     <insert id="insertStudentList" parameterType="com.start.springbootdemo.entity.Student">
         insert into student(id,name,sex,class_id,attend_school_time,addtime)

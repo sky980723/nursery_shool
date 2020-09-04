@@ -54,4 +54,6 @@ public interface StudentDao {
                                @Param("studentName") String studentName,@Param("gradeName") String gradeName);
 
     Integer insertStudentList(@Param("list") List<Student> list);
+
+    Integer updateLikeCount(@Param("studentId") String studentId,@Param("likeCount") int likeCount);
 }
