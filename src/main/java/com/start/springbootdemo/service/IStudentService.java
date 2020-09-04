@@ -38,4 +38,6 @@ public interface IStudentService {
 	Results<String> improtExcel(MultipartFile file, HttpServletRequest request);
 
     int ExcelDoing(List<Student> list, int sta, int size);
+
+    Results<Student> getStudentById(String id);
 }

@@ -3,6 +3,7 @@ package com.start.springbootdemo.entity;
 import java.util.Date;
 
 /**
+ * 学生相册的实体类
  * @author Sky
  */
 public class StudentImg {
@@ -13,7 +14,7 @@ public class StudentImg {
 
     private String imgUrl;
 
-    private String sendWord;
+    private String describe;//图片的描述
 
     private Date addtime;
 
@@ -43,12 +44,12 @@ public class StudentImg {
         this.imgUrl = imgUrl;
     }
 
-    public String getSendWord() {
-        return sendWord;
+    public String getDescribe() {
+        return describe;
     }
 
-    public void setSendWord(String sendWord) {
-        this.sendWord = sendWord;
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 
     public Date getAddtime() {

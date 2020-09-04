@@ -1,6 +1,5 @@
 package com.start.springbootdemo.service.impl;
 
-import ch.qos.logback.core.util.TimeUtil;
 import com.aliyuncs.utils.StringUtils;
 import com.start.springbootdemo.dao.ClassDao;
 import com.start.springbootdemo.dao.StudentDao;
@@ -390,6 +389,22 @@ public class StudentServiceImpl implements IStudentService {
 		studentDao.insertStudentList(list);
 
 		return 0;
+	}
+
+	@Override
+	public Results<Student> getStudentById(String id) {
+		Results<Student> results = new Results<>();
+		//根据ID查询学生的基本信息
+		Student student = studentDao.getStudentById(id);
+		//根据学生ID查询相册集合
+		List<StudentImg> studentImgList = studentDao.listStudentImg(id);
+		if (student != null) {
+			student.setStudentImgList(studentImgList);
+		}
+		results.setStatus("0");
+		results.setData(student);
+
+		return results;
 	}
 
 	/**

@@ -56,4 +56,6 @@ public interface StudentDao {
     Integer insertStudentList(@Param("list") List<Student> list);
 
     Integer updateLikeCount(@Param("studentId") String studentId,@Param("likeCount") int likeCount);
+
+    Student getStudentById(@Param("id") String id);
 }

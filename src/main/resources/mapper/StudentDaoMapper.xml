@@ -18,12 +18,25 @@
         <result column="like_count" property="likeCount"/>
         <result column="manifesto" property="manifesto"/>
         <result column="attend_school_time" property="attendSchoolTime"/>
+        <result column="send_word" property="sendWord"/>
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <!--根据学生ID查询学生的基本信息-->
+    <select id="getStudentById" resultMap="StudentDaoMap">
+        select s.*,
+               (select class_name from class where id = s.class_id)            as className,
+               (select grade_name
+                from grade
+                where id = (select grade_id from class where id = s.class_id)) as gradeName
+        from student as s
+        where id = #{id}
+    </select>
     <!--修改学生的点赞数-->
     <update id="updateLikeCount">
-        update student set like_count = like_count + #{likeCount} where id = #{studentId}
+        update student
+        set like_count = like_count + #{likeCount}
+        where id = #{studentId}
     </update>
     <!--批量添加学生-->
     <insert id="insertStudentList" parameterType="com.start.springbootdemo.entity.Student">
@@ -40,15 +53,15 @@
         where school_id = #{schoolId}
           and name = #{studentName}
           and class_id in (select id
-                          from class
-                          where class_name = #{className}
-                            and school_id = #{schoolId}
-                            and grade_id in
-                                (select id
-                                 from grade
-                                 where grade_name =
-                                       #{gradeName}
-                                   and school_id = #{schoolId}))
+                           from class
+                           where class_name = #{className}
+                             and school_id = #{schoolId}
+                             and grade_id in
+                                 (select id
+                                  from grade
+                                  where grade_name =
+                                        #{gradeName}
+                                    and school_id = #{schoolId}))
     </select>
     <update id="updateStudent" parameterType="com.start.springbootdemo.entity.Student">
         update student set
@@ -85,13 +98,23 @@
         <if test="attendSchoolTime != null and attendSchoolTime !=''">
             attend_school_time = #{attendSchoolTime},
         </if>
+        <if test="sendWord != null and sendWord !=''">
+            send_word = #{sendWord},
+        </if>
         updatetime = #{updatetime} where id = #{id}
     </update>
 
     <select id="getStudent" resultMap="StudentDaoMap">
         select s.*,
-               (select class_name from class where id = s.class_id)                                         as className,
-               (select grade_name from grade where id = (select grade_id from class where id = s.class_id)) as gradeName
+               (select class_name from class where id = s.class_id)            as className,
+               (select grade_name
+                from grade
+                where id = (select grade_id from class where id = s.class_id)) as gradeName,
+               IF((SELECT count(id)
+                   from student_like_record
+                   where open_id = #{openId}
+                     and student_id = s.id
+                     and isshow = 1) > 0, 1, 0)                                as islike
         from student as s
         where id = (select student_id
                     from patriarch_student
@@ -105,10 +128,10 @@
     <insert id="saveStudent" parameterType="com.start.springbootdemo.entity.Student">
         insert into student
         (id, `name`, head_img, sex, class_id, birthday, interest, strong_point, honor, school_id, addtime,
-         attend_school_time)
+         attend_school_time, send_word)
         values (#{id}, #{name}, #{headImg}, #{sex}, #{classId}, #{birthday}, #{interest}, #{strongPoint}, #{honor},
                 #{schoolId},
-                #{addtime}, #{attendSchoolTime})
+                #{addtime}, #{attendSchoolTime}, #{sendWord})
     </insert>
 
     <select id="listStudent" resultMap="StudentDaoMap">
@@ -278,9 +301,9 @@
     <!--学生相册表的映射-->
     <resultMap type="com.start.springbootdemo.entity.StudentImg" id="StudentImgMap">
         <result column="id" property="id"/>
-        <result column="stduent_id" property="stduentId"/>
+        <result column="stduent_id" property="studentId"/>
         <result column="img_url" property="imgUrl"/>
-        <result column="send_word" property="sendWord"/>
+        <result column="describe" property="describe"/>
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
@@ -291,16 +314,17 @@
         order by addtime desc
     </select>
     <insert id="saveStudentImg" parameterType="com.start.springbootdemo.entity.StudentImg">
-        insert into student_img(id, student_id, img_url, send_word, addtime)
-        values (#{id}, #{studentId}, #{imgUrl}, #{sendWord}, #{addtime})
+        insert into student_img(id, student_id, img_url,
+                                describe, addtime)
+        values (#{id}, #{studentId}, #{imgUrl}, #{describe}, #{addtime})
     </insert>
     <update id="updateStudentImg" parameterType="com.start.springbootdemo.entity.StudentImg">
         update student_img set
         <if test="imgUrl != null and imgUrl !=''">
             img_url = #{imgUrl},
         </if>
-        <if test="sendWord != null and sendWord !=''">
-            send_word = #{sendWord},
+        <if test="describe != null and describe !=''">
+            describe = #{describe},
         </if>
         updatetime = #{updatetime} where id = #{id}
     </update>

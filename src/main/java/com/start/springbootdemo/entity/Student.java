@@ -37,6 +37,8 @@ public class Student {
 
     private String attendSchoolTime;//入学年份
 
+    private String sendWord;//家长寄语
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addtime;
 
@@ -50,6 +52,14 @@ public class Student {
     private String gradeName;//年级名称
 
     private List<StudentImg> studentImgList = new ArrayList<>();
+
+    public String getSendWord() {
+        return sendWord;
+    }
+
+    public void setSendWord(String sendWord) {
+        this.sendWord = sendWord;
+    }
 
     public List<StudentImg> getStudentImgList() {
         return studentImgList;
