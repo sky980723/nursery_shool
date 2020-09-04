@@ -62,6 +62,8 @@ public class IndexServiceImpl implements IIndexService {
         //sesstion中放参数
         request.getSession().setAttribute("schoolId", companyUser.getSchoolId());
         request.getSession().setAttribute("isDean", companyUser.getIsDean());
+        //设置登录超时为2小时
+        request.getSession().setMaxInactiveInterval(60 * 60 * 2);
 
         return results;
     }
@@ -137,6 +139,14 @@ public class IndexServiceImpl implements IIndexService {
 
             return results;
         }
+        //添加之前先验证一下账号是否存在
+        CompanySchool old = indexDao.getCompanySchool(companySchool.getAccount());
+        if (old != null) {
+            results.setStatus("1");
+            results.setMessage("该账号已被使用，请更换后再次尝试~");
+
+            return results;
+        }
         //添加一个幼儿园的主账号
         companySchool.setId(KeyGen.uuid());
         companySchool.setIsDean(1);
@@ -145,6 +155,8 @@ public class IndexServiceImpl implements IIndexService {
         //注册成功后直接登录
         request.getSession().setAttribute("schoolId", companySchool.getSchoolId());
         request.getSession().setAttribute("isDean", 1);
+        //设置登录2小时超时
+        request.getSession().setMaxInactiveInterval(60 * 60 * 2);
         results.setStatus("0");
 
         return results;

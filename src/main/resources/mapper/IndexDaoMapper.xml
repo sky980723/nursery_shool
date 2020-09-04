@@ -103,7 +103,7 @@
     <select id="getCompanySchool" resultMap="CompanySchoolMap">
         select *
         from company_school
-        where account = #{account}
+        where account = #{account} and is_dean = 1
         order by addtime desc
         limit 1
     </select>

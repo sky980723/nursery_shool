@@ -49,7 +49,12 @@ public class IndexController {
         return indexService.login(account, password, request);
     }
 
-    //注册接口，注册成功后登陆
+    /**
+     * 注册接口，注册成功后登陆
+     * @param companySchool
+     * @param request
+     * @return
+     */
     @PostMapping("/saveCompanySchool")
     public Results<String> saveCompanySchool(@RequestBody CompanySchool companySchool, HttpServletRequest request) {
 
