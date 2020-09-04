@@ -128,7 +128,7 @@ public class StudentController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("/getStudent")
+	@GetMapping("/getStudentById")
 	public Results<Student> getStudent(@RequestParam(name = "id") String id) {
 
 		return studentService.getStudentById(id);
