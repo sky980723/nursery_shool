@@ -12,6 +12,16 @@ public class AccessToken {
 
     private String scope;// 凭证授权作用域
 
+	private String errcode;
+
+	public String getErrcode() {
+		return errcode;
+	}
+
+	public void setErrcode(String errcode) {
+		this.errcode = errcode;
+	}
+
 	public String getAccess_token() {
 		return access_token;
 	}

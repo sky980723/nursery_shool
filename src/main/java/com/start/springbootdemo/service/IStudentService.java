@@ -23,11 +23,11 @@ public interface IStudentService {
 
     Results<String> saveOrUpdateLike(String studentId, String openId);
 
-    Results<String> getOpenId(String code, HttpServletRequest request, HttpServletResponse response) throws IOException;
+   void getOpenId(String code, String status, HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     Results<Map<String, Object>> getStudent(String openId, String schoolId);
 
-    Results<String> getCode(HttpServletResponse response) throws IOException ;
+    Results<String> getCode(String schoolId, HttpServletResponse response) throws IOException ;
 
     Results<String> saveOrUpdateStudentImg(StudentImg studentImg);
 

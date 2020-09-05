@@ -58,4 +58,8 @@ public interface StudentDao {
     Integer updateLikeCount(@Param("studentId") String studentId,@Param("likeCount") int likeCount);
 
     Student getStudentById(@Param("id") String id);
+
+	int countPatriarch(@Param("openId") String openId);
+
+    Integer updatePatriarchByOpenId(Patriarch patriarch);
 }
