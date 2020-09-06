@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,8 @@ public class IndexServiceImpl implements IIndexService {
     @Override
     public Results<CompanySchool> login(String account, String password, HttpServletRequest request) {
         Results<CompanySchool> results = new Results<>();
+        int serverPort = request.getServerPort();
+        System.out.println(serverPort);
         //根据账号查询，账号字段在表中加了唯一索引
         CompanySchool companyUser = indexDao.getCompanySchool(account);
         if (companyUser == null) {
