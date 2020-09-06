@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Key;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -170,14 +171,13 @@ public class StudentServiceImpl implements IStudentService {
 	}
 
 	@Override
-	public Results<String> getOpenId(String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Results<String> results = new Results<>();
+	public void getOpenId(String code, String status, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 
-		Map<String, String> mapss = new HashMap<String, String>();
-		mapss.put("appid", "");
-		mapss.put("secret", "");
+		Map<String, String> mapss = new HashMap<>();
+		mapss.put("appid", Patterns.WX_APP_ID);
+		mapss.put("secret", Patterns.WX_APP_SECRET);
 		mapss.put("code", code);
 		mapss.put("grant_type", "authorization_code");
 
@@ -195,13 +195,27 @@ public class StudentServiceImpl implements IStudentService {
 			String bodyuser = new String(byteuser);
 			WeixinInfo userInfo = Json.from(bodyuser, WeixinInfo.class);
 			if (userInfo != null) {
-
+				//根据openID查询是否存在，判断是添加还是修改
+				int count = studentDao.countPatriarch(userInfo.getOpenid());
+				Patriarch patriarch = new Patriarch();
+				patriarch.setId(KeyGen.uuid());
+				patriarch.setOpenId(userInfo.getOpenid());
+				patriarch.setWxHeadImg(userInfo.getHeadimgurl());
+				patriarch.setWxNickName(userInfo.getNickname());
+				patriarch.setSchoolId(status);
+				patriarch.setAddtime(new Date());
+				patriarch.setUpdatetime(new Date());
+				if (count == 0) {
+					//添加一条家长的基本信息
+					studentDao.savePatriarch(patriarch);
+				}else {
+					//根据openID修改家长基本信息
+					studentDao.updatePatriarchByOpenId(patriarch);
+				}
 				// 这个地方是跳转链接
-				response.sendRedirect("http://kz.zhongshicc.com/web/outstandingStudents/index?openId=" + userInfo.getOpenid());
+				response.sendRedirect("http://124.70.26.139/#/pages/child/child?openId=" + userInfo.getOpenid() + "&schoolId=" + status);
 			}
-
 		}
-		return null;
 	}
 
 	@Override
@@ -225,15 +239,11 @@ public class StudentServiceImpl implements IStudentService {
 	}
 
 	@Override
-	public Results<String> getCode(HttpServletResponse response) throws IOException {
-
-		Results<Map<String, String>> result = new Results<>();
-
-		String state = null;
-		response.sendRedirect("https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + "这个地方拼接appid"
-				+ "&redirect_uri=http%3a%2f%2ftiku.sdymei.com%2fapi%2fwx%2fweb%2f " +
-				"newbank&response_type=code&scope=snsapi_base&state="
-				+ state + "#wechat_redirect");
+	public Results<String> getCode(String schoolId, HttpServletResponse response) throws IOException {
+		String state = schoolId;
+		response.sendRedirect("https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Patterns.WX_APP_ID
+				+ "&redirect_uri=http%3a%2f%2f124.70.26.139%3a8080%2fapi%2fstudent%2fgetOpenId" +
+				"&response_type=code&scope=snsapi_userinfo&state=" + state + "#wechat_redirect");
 		return null;
 	}
 

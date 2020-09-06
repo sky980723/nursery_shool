@@ -155,6 +155,9 @@
     </select>
 
     <!--家长表的映射-->
+    <select id="countPatriarch" resultType="java.lang.Integer">
+        select count(id) from patriarch where open_id = #{openId}
+    </select>
     <select id="getPatriarch" resultMap="PatriarchMap">
         select *
         from patriarch
@@ -187,6 +190,16 @@
         insert into patriarch(id, realname, mobile, wx_head_img, wx_nick_name, open_id, school_id, addtime)
         values (#{id}, #{realname}, #{mobile}, #{wxHeadImg}, #{wxNickName}, #{openId}, #{schoolId}, #{addtime})
     </insert>
+    <update id="updatePatriarchByOpenId" parameterType="com.start.springbootdemo.entity.Patriarch">
+        update patriarch set
+        <if test="wxHeadImg != null and wxHeadImg !=''">
+            wx_head_img = #{wxHeadImg},
+        </if>
+        <if test="wxNickName != null and wxNickName !=''">
+            wx_nick_name = #{wxNickName},
+        </if>
+        updatetime = #{updatetime} where open_id = #{openId}
+    </update>
     <!--修改-->
     <update id="updatePatriarch" parameterType="com.start.springbootdemo.entity.Patriarch">
         update patriarch set

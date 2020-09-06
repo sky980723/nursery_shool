@@ -96,17 +96,23 @@ public class StudentController {
 	 * @throws IOException
 	 */
 	@GetMapping("/getOpenId")
-	public Results<String> getOpenId(@RequestParam(name = "code") String code, HttpServletRequest request,
-									 HttpServletResponse response) throws IOException {
+	public void getOpenId(@RequestParam(name = "code") String code, @RequestParam(name = "state") String status, HttpServletRequest request,
+						  HttpServletResponse response) throws IOException {
 
-		return studentService.getOpenId(code, request, response);
+		studentService.getOpenId(code, status, request, response);
 	}
 
-	//获取code(待测试)
+	/**
+	 * 获取code(待测试)
+	 *
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
 	@GetMapping("getCode")
-	public Results<String> getCode(HttpServletResponse response) throws IOException {
+	public Results<String> getCode(@RequestParam(name = "schoolId") String schoolId, HttpServletResponse response) throws IOException {
 
-		return studentService.getCode(response);
+		return studentService.getCode(schoolId, response);
 	}
 
 	/**
