@@ -44,4 +44,8 @@ public interface IndexDao {
     List<CompanySchool> listCompanySchool(@Param("pageNo") int pageNo, @Param("pageSize") int pageSize,
                                           @Param("condition") String condition,
                                           @Param("schoolId") String schoolId);
+
+    CompanySchool getCompanySchoolById(@Param("id") String id);
+
+    String getSchoolId(@Param("id") String id);
 }

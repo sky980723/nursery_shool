@@ -9,13 +9,13 @@ import com.start.springbootdemo.service.IIndexService;
 import com.start.springbootdemo.util.KeyGen;
 import com.start.springbootdemo.util.Patterns;
 import com.start.springbootdemo.util.Results;
+import org.apache.poi.util.Internal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +31,17 @@ public class IndexServiceImpl implements IIndexService {
     private IndexDao indexDao;
 
     @Override
-    public Results<List<PublicityApp>> listPublicity(String type, String schoolId) {
+    public Results<List<PublicityApp>> listPublicity(String type, String schoolId, HttpServletRequest request) {
         Results<List<PublicityApp>> results = new Results<>();
+        if (StringUtils.isEmpty(schoolId)) {
+            schoolId = verifyToken(request);
+        }
+        if (StringUtils.isEmpty(schoolId)) {
+            results.setStatus("1");
+            results.setMessage("传参错误，请检查");
+
+            return results;
+        }
         List<PublicityApp> list = indexDao.listPublicity(type, schoolId);
         results.setStatus("0");
         results.setData(list);
@@ -43,10 +52,15 @@ public class IndexServiceImpl implements IIndexService {
     @Override
     public Results<CompanySchool> login(String account, String password, HttpServletRequest request) {
         Results<CompanySchool> results = new Results<>();
-        int serverPort = request.getServerPort();
-        System.out.println(serverPort);
-        //根据账号查询，账号字段在表中加了唯一索引
-        CompanySchool companyUser = indexDao.getCompanySchool(account);
+        String token = request.getHeader("token");
+        CompanySchool companyUser = new CompanySchool();
+        if (StringUtils.isNotEmpty(token)) {
+            //根据token查询账号的
+            companyUser = indexDao.getCompanySchoolById(token);
+        } else {
+            //根据账号查询，账号字段在表中加了唯一索引
+            companyUser = indexDao.getCompanySchool(account);
+        }
         if (companyUser == null) {
             results.setStatus("1");
             results.setMessage("无账号信息");
@@ -62,9 +76,6 @@ public class IndexServiceImpl implements IIndexService {
         }
         results.setStatus("0");
         results.setData(companyUser);
-        //sesstion中放参数
-        request.getSession().setAttribute("schoolId", companyUser.getSchoolId());
-        request.getSession().setAttribute("isDean", companyUser.getIsDean());
         //设置登录超时为2小时
         request.getSession().setMaxInactiveInterval(60 * 60 * 2);
 
@@ -75,7 +86,7 @@ public class IndexServiceImpl implements IIndexService {
     public Results<String> saveOrUpdateTeacher(Teacher teacher, HttpServletRequest request) {
         Results<String> results = new Results<>();
         //获取schoolId字段
-        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        String schoolId = verifyToken(request);
         if (StringUtils.isEmpty(schoolId)) {
             results.setStatus("1");
             results.setMessage("登录超时，请重新登录");
@@ -109,9 +120,19 @@ public class IndexServiceImpl implements IIndexService {
     }
 
     @Override
-    public Results<Map<String, Object>> listTeacher(String schoolId, String teacherName, Integer page) {
+    public Results<Map<String, Object>> listTeacher(String schoolId, String teacherName, Integer page,
+                                                    HttpServletRequest request) {
         Results<Map<String, Object>> results = new Results<>();
         Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isEmpty(schoolId)) {
+            schoolId = verifyToken(request);
+        }
+        if (StringUtils.isEmpty(schoolId)) {
+            results.setStatus("1");
+            results.setMessage("传参有误");
+
+            return results;
+        }
         //这样就保证schoolId字段一定有值
         Integer pageSize = 0;
         Integer pageNo = 0;
@@ -155,9 +176,6 @@ public class IndexServiceImpl implements IIndexService {
         companySchool.setIsDean(1);
         companySchool.setAddtime(new Date());
         indexDao.saveCompanySchool(companySchool);
-        //注册成功后直接登录
-        request.getSession().setAttribute("schoolId", companySchool.getSchoolId());
-        request.getSession().setAttribute("isDean", 1);
         //设置登录2小时超时
         request.getSession().setMaxInactiveInterval(60 * 60 * 2);
         results.setStatus("0");
@@ -168,7 +186,7 @@ public class IndexServiceImpl implements IIndexService {
     @Override
     public Results<String> saveOrUpdateComapanySchool(CompanySchool companySchool, HttpServletRequest request) {
         Results<String> results = new Results<>();
-        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        String schoolId = verifyToken(request);
         if (StringUtils.isEmpty(schoolId)) {
             results.setStatus("1");
             results.setMessage("登陆超时，请重新登录~");
@@ -176,7 +194,7 @@ public class IndexServiceImpl implements IIndexService {
             return results;
         }
         //根据schoolid和账号查询是否存在重复，账号不允许重复
-        int count = indexDao.countCompanySchool(schoolId, 0, companySchool.getAccount(), companySchool.getId(), null);
+        int count = indexDao.countCompanySchool(schoolId, null, companySchool.getAccount(), companySchool.getId(), null);
         if (count != 0) {
             results.setStatus("1");
             results.setMessage("账号重复，请修改后再次尝试~");
@@ -186,6 +204,7 @@ public class IndexServiceImpl implements IIndexService {
         Date date = new Date();
         //后台维护子账号的接口
         //根据id判断是添加还是修改
+        companySchool.setIsDean(0);
         if (StringUtils.isEmpty(companySchool.getId())) {
             //添加
             companySchool.setId(KeyGen.uuid());
@@ -193,25 +212,35 @@ public class IndexServiceImpl implements IIndexService {
             companySchool.setAddtime(date);
             indexDao.saveCompanySchool(companySchool);
         } else {
-            //修改
+            //修改,无法修改isdean字段
             companySchool.setUpdatetime(date);
             indexDao.updateCompanySchool(companySchool);
         }
+        results.setStatus("0");
 
-        return null;
+        return results;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Results<String> deleteCompanySchool(String id, HttpServletRequest request) {
         Results<String> results = new Results<>();
-        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        String schoolId = verifyToken(request);
         if (StringUtils.isEmpty(schoolId)) {
             results.setStatus("1");
             results.setMessage("登录超时，请重新登录~");
 
             return results;
         }
+        //如果是主账号  禁止删除
+        CompanySchool companySchool = indexDao.getCompanySchoolById(id);
+        if (companySchool != null && companySchool.getIsDean() != null && companySchool.getIsDean() == 1) {
+            results.setStatus("1");
+            results.setMessage("主账号无法删除~");
+
+            return results;
+        }
+
         //根据id删除
         indexDao.deleteCompanySchool(id);
         results.setStatus("0");
@@ -222,7 +251,7 @@ public class IndexServiceImpl implements IIndexService {
     @Override
     public Results<List<CompanySchool>> listCompanySchool(int page, String condition, HttpServletRequest request) {
         Results<List<CompanySchool>> results = new Results<>();
-        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        String schoolId = verifyToken(request);
         if (StringUtils.isEmpty(schoolId)) {
             results.setStatus("1");
             results.setMessage("登录超时，请重新登录~");
@@ -240,5 +269,39 @@ public class IndexServiceImpl implements IIndexService {
         return results;
     }
 
+    @Override
+    public String verifyToken(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (StringUtils.isNotEmpty(token)) {
+            String schoolId = indexDao.getSchoolId(token);
+            if (StringUtils.isNotEmpty(schoolId)) {
+                return schoolId;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Results<List<Teacher>> listTeacherAdmin(Integer page, String teacherName, HttpServletRequest request) {
+        Results<List<Teacher>> results = new Results<>();
+        String schoolId = verifyToken(request);
+        if (StringUtils.isEmpty(schoolId)) {
+            results.setStatus("1");
+            results.setMessage("传参错误，请检查");
+
+            return results;
+        }
+        int pageSize = 0;
+        int pageNo = 0;
+        if (page != null) {
+            pageSize = Patterns.PAGE_SIZE_ADMIN;
+            pageNo = (page - 1) * pageSize;
+        }
+        List<Teacher> list = indexDao.listTeacher(pageNo, pageSize, teacherName, schoolId);
+        results.setStatus("0");
+        results.setData(list);
+
+        return results;
+    }
 
 }

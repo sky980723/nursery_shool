@@ -3,6 +3,7 @@ package com.start.springbootdemo.service.impl;
 import com.start.springbootdemo.dao.BannerDao;
 import com.start.springbootdemo.entity.Banner;
 import com.start.springbootdemo.service.IBannerService;
+import com.start.springbootdemo.service.IIndexService;
 import com.start.springbootdemo.util.KeyGen;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,14 @@ public class BannerServiceImpl implements IBannerService {
 
     @Autowired
     private BannerDao bannerDao;
+    @Autowired
+    private IIndexService indexService;
 
     @Override
     public Results<List<Banner>> listBanner(String schoolId, Integer types, HttpServletRequest request) {
         Results<List<Banner>> results = new Results<>();
         if (StringUtils.isEmpty(schoolId)) {
-            schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+            schoolId = indexService.verifyToken(request);
         }
         if (StringUtils.isEmpty(schoolId)) {
             results.setStatus("1");
@@ -55,7 +58,7 @@ public class BannerServiceImpl implements IBannerService {
     @Override
     public Results<String> saveOrUpdate(Banner banner, HttpServletRequest request) {
         Results<String> results = new Results<>();
-        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        String schoolId = indexService.verifyToken(request);
         if (StringUtils.isEmpty(schoolId)) {
             results.setStatus("1");
             results.setMessage("登录超时，请重新登录");

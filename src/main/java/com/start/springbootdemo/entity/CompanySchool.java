@@ -25,6 +25,12 @@ public class CompanySchool {
 
     private String schoolId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date addtime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updatetime;
+
     public String getNickName() {
         return nickName;
     }
@@ -48,12 +54,6 @@ public class CompanySchool {
     public void setSchoolId(String schoolId) {
         this.schoolId = schoolId;
     }
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date addtime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updatetime;
 
 
     public String getId() {

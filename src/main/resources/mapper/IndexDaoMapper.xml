@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.start.springbootdemo.dao.IndexDao">
+                <!DOCTYPE mapper
+                        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <mapper namespace="com.start.springbootdemo.dao.IndexDao">
 
     <!--按类型获取展示信息-->
     <resultMap type="com.start.springbootdemo.entity.PublicityApp"
@@ -45,12 +45,20 @@
         <result column="addtime" property="addtime"/>
         <result column="updatetime" property="updatetime"/>
     </resultMap>
+    <!--根据id获取schoolid-->
+    <select id="getSchoolId" resultType="java.lang.String">
+        select school_id from company_school where id = #{id}
+    </select>
+    <!--根据id获取账号对象-->
+    <select id="getCompanySchoolById" resultMap="CompanySchoolMap">
+        select * from company_school where id = #{id}
+    </select>
     <select id="countCompanySchool" resultType="java.lang.Integer">
         select count(id)
         from company_school
         where school_id = #{schoolId}
         <if test="isDean != null">
-            and is_dean = 1
+            and is_dean = #{isDean}
         </if>
         <if test="account != null and account !=''">
             and account = #{account}
