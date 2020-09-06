@@ -47,15 +47,16 @@ public class ClassController {
     }
 
     /**
-     * 前端获取年级集合 同时获取班级集合(一对多映射有问题)
+     * 前端获取年级集合 同时获取班级集合
      *
      * @param schoolId
      * @return
      */
     @GetMapping("/listGrade")
-    public Results<List<Grade>> listGrade(@RequestParam(name = "schoolId") String schoolId) {
+    public Results<List<Grade>> listGrade(@RequestParam(name = "schoolId",required = false) String schoolId,
+                                          HttpServletRequest request) {
 
-        return classService.listGrade(schoolId);
+        return classService.listGrade(schoolId,request);
     }
 
     /**

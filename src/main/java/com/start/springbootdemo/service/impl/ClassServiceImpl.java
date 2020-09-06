@@ -4,6 +4,7 @@ import com.start.springbootdemo.dao.ClassDao;
 import com.start.springbootdemo.entity.Class;
 import com.start.springbootdemo.entity.Grade;
 import com.start.springbootdemo.service.IClassService;
+import com.start.springbootdemo.service.IIndexService;
 import com.start.springbootdemo.util.KeyGen;
 import com.start.springbootdemo.util.Results;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,14 @@ public class ClassServiceImpl implements IClassService {
 
     @Autowired
     private ClassDao classDao;
+    @Autowired
+    private IIndexService indexService;
 
 
     @Override
     public Results<String> saveOrUpdateClass(Class studentClass, HttpServletRequest request) {
         Results<String> results = new Results<>();
-        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        String schoolId = indexService.verifyToken(request);
         if (StringUtils.isEmpty(schoolId)) {
             results.setStatus("1");
             results.setMessage("登录超时，请重新登录");
@@ -72,7 +75,7 @@ public class ClassServiceImpl implements IClassService {
     @Override
     public Results<String> saveOrUpdateGrade(Grade grade, HttpServletRequest request) {
         Results<String> results = new Results<>();
-        String schoolId = String.valueOf(request.getSession().getAttribute("schoolId"));
+        String schoolId = indexService.verifyToken(request);
         if (StringUtils.isEmpty(schoolId)) {
             results.setStatus("1");
             results.setMessage("登录超时，请重新登录");
@@ -117,8 +120,17 @@ public class ClassServiceImpl implements IClassService {
     }
 
     @Override
-    public Results<List<Grade>> listGrade(String schoolId) {
+    public Results<List<Grade>> listGrade(String schoolId, HttpServletRequest request) {
         Results<List<Grade>> results = new Results<>();
+        if (com.aliyuncs.utils.StringUtils.isEmpty(schoolId)) {
+            schoolId = indexService.verifyToken(request);
+        }
+        if (com.aliyuncs.utils.StringUtils.isEmpty(schoolId)) {
+            results.setStatus("1");
+            results.setMessage("缺少必要传参，请检查~");
+
+            return results;
+        }
         //查询年级集合，同时查询班级集合
         List<Grade> list = classDao.listGrade(schoolId);
         for (Grade grade : list) {

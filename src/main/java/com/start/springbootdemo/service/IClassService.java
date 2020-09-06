@@ -16,5 +16,5 @@ public interface IClassService {
 
     Results<String> deleteGrade(String id);
 
-    Results<List<Grade>> listGrade(String schoolId);
+    Results<List<Grade>> listGrade(String schoolId, HttpServletRequest request);
 }
